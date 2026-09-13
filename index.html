@@ -3,4755 +3,898 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>LifeFlow — Life & Task Manager</title>
+<meta name="theme-color" content="#07111f">
+<title>LifeFlow — Offline Life Manager</title>
 
 <style>
 :root{
-    --bg:#07111f;
-    --bg2:#0b1729;
-    --card:#101d31;
-    --card2:#14243d;
-    --border:rgba(255,255,255,.08);
-    --text:#f7f9fd;
-    --muted:#91a0b5;
-
-    --primary:#7c5cff;
-    --primary2:#5de1e6;
-
-    --success:#37d995;
-    --danger:#ff647d;
-    --warning:#ffc15a;
-
-    --shadow:0 18px 50px rgba(0,0,0,.25);
+    --bg:#07111f;--card:#101d31;--card2:#14243d;--border:rgba(255,255,255,.08);
+    --text:#f7f9fd;--muted:#91a0b5;--primary:#7c5cff;--primary2:#5de1e6;
+    --success:#37d995;--danger:#ff647d;--warning:#ffc15a;
 }
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{
-    font-family:
-        Inter,
-        Segoe UI,
-        Arial,
-        sans-serif;
-
-    background:
-        radial-gradient(
-            circle at 10% 10%,
-            rgba(124,92,255,.16),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 90% 20%,
-            rgba(93,225,230,.09),
-            transparent 25%
-        ),
-        var(--bg);
-
-    color:var(--text);
-    min-height:100vh;
+    font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);min-height:100vh;
+    background:radial-gradient(circle at 10% 10%,rgba(124,92,255,.16),transparent 30%),
+               radial-gradient(circle at 90% 20%,rgba(93,225,230,.09),transparent 25%),var(--bg)
 }
-
-button,
-input,
-textarea,
-select{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-
-/* =========================================================
-   APP
-========================================================= */
-
-.app{
-    min-height:100vh;
-}
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
+button,input,textarea,select{font:inherit} button{cursor:pointer}
+.app{min-height:100vh}
 .sidebar{
-    position:fixed;
-    top:0;
-    left:0;
-    bottom:0;
-
-    width:260px;
-
-    padding:22px 16px;
-
-    background:rgba(7,17,31,.90);
-
-    border-right:1px solid var(--border);
-
-    backdrop-filter:blur(20px);
-
-    z-index:50;
-
-    transition:.25s;
+    position:fixed;inset:0 auto 0 0;width:260px;padding:22px 16px;z-index:50;
+    background:rgba(7,17,31,.9);border-right:1px solid var(--border);backdrop-filter:blur(20px)
 }
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:11px;
-
-    font-size:21px;
-    font-weight:900;
-
-    margin-bottom:28px;
-}
-
+.logo{display:flex;align-items:center;gap:11px;font-size:21px;font-weight:900;margin-bottom:28px}
 .logoIcon{
-    width:43px;
-    height:43px;
-
-    border-radius:14px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--primary),
-            var(--primary2)
-        );
-
-    box-shadow:
-        0 10px 30px rgba(124,92,255,.28);
+    width:43px;height:43px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--primary),var(--primary2))
 }
-
-.logo small{
-    display:block;
-    margin-top:2px;
-
-    font-size:10px;
-    font-weight:500;
-
-    color:var(--muted);
-}
-
-.nav{
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-}
-
+.logo small{display:block;font-size:10px;color:var(--muted);font-weight:500}
+.nav{display:flex;flex-direction:column;gap:7px}
 .nav button{
-    width:100%;
-
-    border:0;
-
-    color:var(--muted);
-
-    background:transparent;
-
-    padding:13px 14px;
-
-    border-radius:12px;
-
-    text-align:left;
-
-    transition:.2s;
+    border:0;background:transparent;color:var(--muted);padding:13px 14px;border-radius:12px;text-align:left
 }
-
-.nav button:hover,
-.nav button.active{
-    background:rgba(124,92,255,.14);
-    color:#fff;
-}
-
-.sideBottom{
-    position:absolute;
-
-    left:16px;
-    right:16px;
-    bottom:20px;
-}
-
+.nav button:hover,.nav button.active{background:rgba(124,92,255,.14);color:#fff}
+.sideBottom{position:absolute;left:16px;right:16px;bottom:20px}
 .miniQuote{
-    padding:16px;
-
-    border-radius:16px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(124,92,255,.17),
-            rgba(93,225,230,.08)
-        );
-
-    border:1px solid var(--border);
-
-    color:#dce5f3;
-
-    font-size:13px;
-    line-height:1.6;
+    padding:16px;border-radius:16px;border:1px solid var(--border);
+    background:linear-gradient(135deg,rgba(124,92,255,.17),rgba(93,225,230,.08));
+    color:#dce5f3;font-size:13px;line-height:1.6
 }
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main{
-    margin-left:260px;
-
-    padding:25px;
-
-    width:calc(100% - 260px);
-}
-
-.topbar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    gap:15px;
-
-    margin-bottom:24px;
-}
-
-.greeting h1{
-    font-size:28px;
-    margin-bottom:5px;
-}
-
-.greeting p{
-    color:var(--muted);
-}
-
-.topActions{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.btn{
-    border:0;
-
-    padding:11px 16px;
-
-    border-radius:11px;
-
-    color:#fff;
-
-    font-weight:800;
-}
-
-.btnPrimary{
-    background:
-        linear-gradient(
-            135deg,
-            var(--primary),
-            #a16eff
-        );
-}
-
-.btnSuccess{
-    background:
-        linear-gradient(
-            135deg,
-            #18b76e,
-            #42df99
-        );
-}
-
-.btnGhost{
-    background:var(--card);
-    border:1px solid var(--border);
-}
-
-.btnDanger{
-    background:rgba(255,100,125,.10);
-    border:1px solid rgba(255,100,125,.20);
-    color:#ff91a4;
-}
-
+.main{margin-left:260px;padding:25px;width:calc(100% - 260px)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px}
+.greeting h1{font-size:28px;margin-bottom:5px}.greeting p{color:var(--muted)}
+.topActions{display:flex;gap:10px;align-items:center}
+.btn{border:0;padding:11px 16px;border-radius:11px;color:#fff;font-weight:800}
+.btnPrimary{background:linear-gradient(135deg,var(--primary),#a16eff)}
+.btnSuccess{background:linear-gradient(135deg,#18b76e,#42df99)}
+.btnGhost{background:var(--card);border:1px solid var(--border)}
 .iconBtn{
-    width:44px;
-    height:44px;
-
-    border-radius:12px;
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    color:#fff;
+    width:44px;height:44px;border-radius:12px;background:var(--card);border:1px solid var(--border);color:#fff
 }
-
-
-/* =========================================================
-   GRID
-========================================================= */
-
-.grid{
-    display:grid;
-
-    grid-template-columns:repeat(12,1fr);
-
-    gap:17px;
-}
-
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:17px}
 .card{
-    background:
-        linear-gradient(
-            180deg,
-            rgba(17,30,50,.96),
-            rgba(10,21,37,.96)
-        );
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    padding:20px;
-
-    box-shadow:var(--shadow);
+    background:linear-gradient(180deg,rgba(17,30,50,.96),rgba(10,21,37,.96));
+    border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:0 18px 50px rgba(0,0,0,.25)
 }
-
-.span12{
-    grid-column:span 12;
+.span12{grid-column:span 12}.span8{grid-column:span 8}.span7{grid-column:span 7}.span6{grid-column:span 6}.span5{grid-column:span 5}.span4{grid-column:span 4}
+.cardHeader{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:16px}
+.cardTitle{font-size:17px;font-weight:900}.muted{font-size:13px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{padding:18px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:17px}
+.statIcon{font-size:23px}.statNum{font-size:27px;font-weight:900;margin:10px 0 3px}
+.input,textarea,select{
+    width:100%;padding:12px 13px;border-radius:11px;border:1px solid var(--border);
+    outline:none;background:#091526;color:#fff
 }
-
-.span8{
-    grid-column:span 8;
-}
-
-.span7{
-    grid-column:span 7;
-}
-
-.span6{
-    grid-column:span 6;
-}
-
-.span5{
-    grid-column:span 5;
-}
-
-.span4{
-    grid-column:span 4;
-}
-
-.span3{
-    grid-column:span 3;
-}
-
-.cardHeader{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    gap:15px;
-
-    margin-bottom:16px;
-}
-
-.cardTitle{
-    font-size:17px;
-    font-weight:900;
-}
-
-.muted{
-    color:var(--muted);
-    font-size:13px;
-}
-
-
-/* =========================================================
-   STATS
-========================================================= */
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:14px;
-}
-
-.stat{
-    padding:18px;
-
-    background:rgba(255,255,255,.025);
-
-    border:1px solid var(--border);
-
-    border-radius:17px;
-}
-
-.statIcon{
-    font-size:23px;
-}
-
-.statNum{
-    font-size:27px;
-    font-weight:900;
-
-    margin:10px 0 3px;
-}
-
-
-/* =========================================================
-   INPUTS
-========================================================= */
-
-.input,
-textarea,
-select{
-    width:100%;
-
-    padding:12px 13px;
-
-    border-radius:11px;
-
-    border:1px solid var(--border);
-
-    outline:none;
-
-    background:#091526;
-
-    color:#fff;
-}
-
-.input:focus,
-textarea:focus,
-select:focus{
-    border-color:rgba(124,92,255,.65);
-
-    box-shadow:
-        0 0 0 3px rgba(124,92,255,.08);
-}
-
-textarea{
-    resize:vertical;
-}
-
-
-/* =========================================================
-   TASK FORM
-========================================================= */
-
-.taskForm{
-    display:grid;
-
-    grid-template-columns:2fr 1fr 1fr auto;
-
-    gap:10px;
-}
-
-
-/* =========================================================
-   TASK LIST
-========================================================= */
-
-.taskList{
-    display:flex;
-    flex-direction:column;
-
-    gap:10px;
-
-    max-height:520px;
-
-    overflow:auto;
-}
-
+.input:focus,textarea:focus,select:focus{border-color:rgba(124,92,255,.65)}
+textarea{resize:vertical}
+.taskForm{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px}
+.taskList{display:flex;flex-direction:column;gap:10px;max-height:520px;overflow:auto}
 .task{
-    display:flex;
-    align-items:center;
-
-    gap:12px;
-
-    padding:14px;
-
-    border-radius:15px;
-
-    background:rgba(255,255,255,.025);
-
-    border:1px solid rgba(255,255,255,.06);
+    display:flex;align-items:center;gap:12px;padding:14px;border-radius:15px;
+    background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06)
 }
-
-.task.done{
-    opacity:.75;
+.task.done{opacity:.75}.check{
+    width:25px;height:25px;border-radius:8px;border:2px solid #58677f;background:transparent;flex:none
 }
-
-.check{
-    width:25px;
-    height:25px;
-
-    border-radius:8px;
-
-    border:2px solid #58677f;
-
-    background:transparent;
-
-    flex:none;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.task.done .check{border-color:var(--success);background:var(--success)}
+.task.done .check::after{content:"✓";color:#06150d;font-weight:900}
+.task.done .taskName{text-decoration:line-through;opacity:.5}
+.taskBody{flex:1}.taskName{font-weight:800}
+.taskMeta{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:12px;color:var(--muted)}
+.tag{padding:4px 8px;border-radius:50px;background:rgba(124,92,255,.11);color:#c6bbff}.high{color:#ff8498}
+.taskActions{display:flex;gap:6px}.smallBtn{padding:7px 9px;border-radius:9px;border:1px solid var(--border);background:#0d1a2d;color:#dfe7f5}
+.focusBox{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.focusItem{padding:16px;border-radius:15px;background:rgba(255,255,255,.025);border:1px solid var(--border)}
+.focusItem b{display:block;margin-top:7px}
+.progressWrap{margin-top:14px}.progressBar{height:11px;background:#081322;border-radius:20px;overflow:hidden}
+.progressFill{width:0;height:100%;border-radius:20px;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:.5s}
+.smallThings{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.thing{padding:16px;border-radius:15px;background:rgba(255,255,255,.025);border:1px solid var(--border)}
+.thing span{font-size:23px}.thing p{margin-top:8px;color:#bcc6d5;line-height:1.5;font-size:13px}
+.habitGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.habitDay{text-align:center;padding:9px 4px;border-radius:10px;background:rgba(255,255,255,.03);color:var(--muted);font-size:11px}
+.habitDay.active{background:rgba(55,217,149,.16);color:#75e9b2}
+.goalList{display:flex;flex-direction:column;gap:12px}.goal{padding:15px;border-radius:15px;background:rgba(255,255,255,.025);border:1px solid var(--border)}
+.goalTop{display:flex;justify-content:space-between;gap:10px}.goalProgress{margin-top:10px}
+.goalProgressBar{height:8px;border-radius:20px;background:#091426;overflow:hidden}.goalProgressFill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--warning),#ff7c7c)}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.dream{position:relative;min-height:170px;overflow:hidden;border-radius:16px;background:#0b1728;border:1px solid var(--border)}
+.dream img{display:block;width:100%;height:170px;object-fit:cover}
+.dreamContent{position:absolute;left:0;right:0;bottom:0;padding:14px;background:linear-gradient(transparent,rgba(0,0,0,.92))}
+.mediaBadge{
+    position:absolute;top:9px;left:9px;padding:5px 8px;border-radius:20px;background:rgba(0,0,0,.55);
+    font-size:11px;backdrop-filter:blur(5px)
 }
-
-.task.done .check{
-    border-color:var(--success);
-    background:var(--success);
-}
-
-.task.done .check::after{
-    content:"✓";
-
-    color:#06150d;
-
-    font-weight:900;
-}
-
-.task.done .taskName{
-    text-decoration:line-through;
-    opacity:.5;
-}
-
-.taskBody{
-    flex:1;
-}
-
-.taskName{
-    font-weight:800;
-}
-
-.taskMeta{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-
-    margin-top:6px;
-
-    font-size:12px;
-
-    color:var(--muted);
-}
-
-.tag{
-    padding:4px 8px;
-
-    border-radius:50px;
-
-    background:rgba(124,92,255,.11);
-
-    color:#c6bbff;
-}
-
-.high{
-    color:#ff8498;
-}
-
-.taskActions{
-    display:flex;
-    gap:6px;
-}
-
-.smallBtn{
-    padding:7px 9px;
-
-    border-radius:9px;
-
-    border:1px solid var(--border);
-
-    background:#0d1a2d;
-
-    color:#dfe7f5;
-}
-
-
-/* =========================================================
-   FOCUS
-========================================================= */
-
-.focusBox{
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:12px;
-}
-
-.focusItem{
-    padding:16px;
-
-    border-radius:15px;
-
-    background:rgba(255,255,255,.025);
-
-    border:1px solid var(--border);
-}
-
-.focusItem b{
-    display:block;
-
-    margin-top:7px;
-}
-
-.progressWrap{
-    margin-top:14px;
-}
-
-.progressBar{
-    height:11px;
-
-    background:#081322;
-
-    border-radius:20px;
-
-    overflow:hidden;
-}
-
-.progressFill{
-    width:0;
-
-    height:100%;
-
-    border-radius:20px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--primary),
-            var(--primary2)
-        );
-
-    transition:.5s;
-}
-
-
-/* =========================================================
-   SMALL THINGS
-========================================================= */
-
-.smallThings{
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:10px;
-}
-
-.thing{
-    padding:16px;
-
-    border-radius:15px;
-
-    background:rgba(255,255,255,.025);
-
-    border:1px solid var(--border);
-}
-
-.thing span{
-    font-size:23px;
-}
-
-.thing p{
-    margin-top:8px;
-
-    color:#bcc6d5;
-
-    line-height:1.5;
-
-    font-size:13px;
-}
-
-
-/* =========================================================
-   HABITS
-========================================================= */
-
-.habitGrid{
-    display:grid;
-
-    grid-template-columns:repeat(7,1fr);
-
-    gap:7px;
-}
-
-.habitDay{
-    text-align:center;
-
-    padding:9px 4px;
-
-    border-radius:10px;
-
-    background:rgba(255,255,255,.03);
-
-    color:var(--muted);
-
-    font-size:11px;
-}
-
-.habitDay.active{
-    background:rgba(55,217,149,.16);
-
-    color:#75e9b2;
-}
-
-
-/* =========================================================
-   GOALS
-========================================================= */
-
-.goalList{
-    display:flex;
-    flex-direction:column;
-
-    gap:12px;
-}
-
-.goal{
-    padding:15px;
-
-    border-radius:15px;
-
-    background:rgba(255,255,255,.025);
-
-    border:1px solid var(--border);
-}
-
-.goalTop{
-    display:flex;
-
-    justify-content:space-between;
-
-    gap:10px;
-}
-
-.goalProgress{
-    margin-top:10px;
-}
-
-.goalProgressBar{
-    height:8px;
-
-    border-radius:20px;
-
-    background:#091426;
-
-    overflow:hidden;
-}
-
-.goalProgressFill{
-    height:100%;
-
-    border-radius:20px;
-
-    background:
-        linear-gradient(
-            90deg,
-            var(--warning),
-            #ff7c7c
-        );
-}
-
-
-/* =========================================================
-   DREAM GALLERY
-========================================================= */
-
-.gallery{
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:12px;
-}
-
-.dream{
-    position:relative;
-
-    min-height:170px;
-
-    overflow:hidden;
-
-    border-radius:16px;
-
-    background:#0b1728;
-
-    border:1px solid var(--border);
-}
-
-.dream img{
-    display:block;
-
-    width:100%;
-    height:170px;
-
-    object-fit:cover;
-}
-
-.dreamContent{
-    position:absolute;
-
-    left:0;
-    right:0;
-    bottom:0;
-
-    padding:14px;
-
-    background:
-        linear-gradient(
-            transparent,
-            rgba(0,0,0,.92)
-        );
-}
-
-
-/* =========================================================
-   VIDEOS
-========================================================= */
-
-.videoGrid{
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:12px;
-}
-
-.videoCard{
-    overflow:hidden;
-
-    border-radius:15px;
-
-    background:rgba(255,255,255,.025);
-
-    border:1px solid var(--border);
-}
-
-.videoFrame{
-    aspect-ratio:16/9;
-
-    background:#030812;
-}
-
-.videoFrame iframe{
-    width:100%;
-    height:100%;
-
-    border:0;
-}
-
-.videoTitle{
-    padding:12px;
-}
-
-
-/* =========================================================
-   PROFIT / LOSS
-========================================================= */
-
-.profitLossList{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-}
-
-.profitLossItem{
-    padding:18px;
-
-    border-radius:20px;
-
-    background:rgba(255,255,255,.02);
-
-    border:1px solid var(--border);
-}
-
-.profitLossHeader{
-    display:flex;
-
-    align-items:center;
-    justify-content:space-between;
-
-    gap:12px;
-
-    margin-bottom:15px;
-}
-
-.profitLossHeader h3{
-    font-size:18px;
-}
-
-.profitLossGrid{
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:16px;
-}
-
-.plSide{
-    overflow:hidden;
-
-    border-radius:18px;
-
-    background:rgba(255,255,255,.025);
-
-    border:1px solid var(--border);
-}
-
-.plImage{
-    display:block;
-
-    width:100%;
-    height:220px;
-
-    object-fit:cover;
-}
-
-.plContent{
-    padding:18px;
-}
-
-.plTitle{
-    margin-bottom:8px;
-
-    font-size:18px;
-
-    font-weight:900;
-}
-
-.profitLabel{
-    color:#61e6a2;
-}
-
-.lossLabel{
-    color:#ff8297;
-}
-
-.plDescription{
-    color:#bcc6d5;
-
-    line-height:1.7;
-
-    font-size:14px;
-
-    white-space:pre-line;
-}
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
+.videoGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.videoCard{overflow:hidden;border-radius:15px;background:rgba(255,255,255,.025);border:1px solid var(--border)}
+.videoFrame{aspect-ratio:16/9;background:#030812}.videoFrame iframe,.videoFrame video{width:100%;height:100%;border:0;object-fit:cover}
+.videoTitle{padding:12px}.mediaSource{font-size:11px;color:var(--muted);margin-top:4px}
+.profitLossList{display:flex;flex-direction:column;gap:18px}
+.profitLossItem{padding:18px;border-radius:20px;background:rgba(255,255,255,.02);border:1px solid var(--border)}
+.profitLossHeader{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.profitLossGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.plSide{overflow:hidden;border-radius:18px;background:rgba(255,255,255,.025);border:1px solid var(--border)}
+.plImage{display:block;width:100%;height:220px;object-fit:cover}
+.plContent{padding:18px}.plTitle{margin-bottom:8px;font-size:18px;font-weight:900}.profitLabel{color:#61e6a2}.lossLabel{color:#ff8297}
+.plDescription{color:#bcc6d5;line-height:1.7;font-size:14px;white-space:pre-line}
 .modal{
-    position:fixed;
-
-    inset:0;
-
-    z-index:100;
-
-    display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-
-    background:rgba(0,0,0,.68);
+    position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.68)
 }
-
-.modal.show{
-    display:flex;
+.modal.show{display:flex}.modalBox{
+    width:min(650px,100%);max-height:90vh;overflow:auto;padding:20px;border-radius:20px;
+    background:#0d192c;border:1px solid var(--border);box-shadow:0 30px 80px rgba(0,0,0,.45)
 }
-
-.modalBox{
-    width:min(600px,100%);
-
-    max-height:90vh;
-
-    overflow:auto;
-
-    padding:20px;
-
-    border-radius:20px;
-
-    background:#0d192c;
-
-    border:1px solid var(--border);
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,.45);
+.modalHeader{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.formGroup{margin-bottom:13px}.formGroup label{display:block;margin-bottom:6px;color:var(--muted);font-size:13px}
+.choiceGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice{
+    padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.025);color:#fff;text-align:left
 }
-
-.modalHeader{
-    display:flex;
-
-    align-items:center;
-    justify-content:space-between;
-
-    gap:10px;
-
-    margin-bottom:18px;
+.choice:hover{border-color:rgba(124,92,255,.5)}
+.fileHint{font-size:11px;color:var(--muted);margin-top:6px}
+.preview{
+    display:none;margin-top:10px;padding:10px;border-radius:12px;border:1px solid var(--border);background:#07111f
 }
-
-.formGroup{
-    margin-bottom:13px;
-}
-
-.formGroup label{
-    display:block;
-
-    margin-bottom:6px;
-
-    color:var(--muted);
-
-    font-size:13px;
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
+.preview img,.preview video{max-width:100%;max-height:180px;border-radius:10px;display:block;margin:auto}
 .toast{
-    position:fixed;
-
-    right:20px;
-    bottom:20px;
-
-    z-index:200;
-
-    width:min(380px,calc(100% - 40px));
-
-    padding:16px;
-
-    border-radius:15px;
-
-    background:#102039;
-
-    border:1px solid rgba(124,92,255,.38);
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.35);
-
-    transform:translateY(130px);
-
-    opacity:0;
-
-    transition:.3s;
+    position:fixed;right:20px;bottom:20px;z-index:200;width:min(380px,calc(100% - 40px));padding:16px;border-radius:15px;
+    background:#102039;border:1px solid rgba(124,92,255,.38);box-shadow:0 20px 50px rgba(0,0,0,.35);
+    transform:translateY(130px);opacity:0;transition:.3s
 }
-
-.toast.show{
-    transform:translateY(0);
-    opacity:1;
-}
-
-.toastTitle{
-    font-weight:900;
-}
-
-.toastText{
-    margin-top:4px;
-
-    color:#b9c4d5;
-
-    font-size:13px;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-.mobileMenu{
-    display:none;
-}
+.toast.show{transform:translateY(0);opacity:1}.toastTitle{font-weight:900}.toastText{margin-top:4px;color:#b9c4d5;font-size:13px}
+.mobileMenu{display:none}
 
 @media(max-width:1000px){
-
-    .sidebar{
-        transform:translateX(-100%);
-    }
-
-    .sidebar.open{
-        transform:translateX(0);
-    }
-
-    .main{
-        margin-left:0;
-
-        width:100%;
-
-        padding:16px;
-    }
-
-    .mobileMenu{
-        display:block;
-    }
-
-    .span8,
-    .span7,
-    .span6,
-    .span5,
-    .span4,
-    .span3{
-        grid-column:span 12;
-    }
-
-    .stats{
-        grid-template-columns:repeat(2,1fr);
-    }
-
+    .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+    .main{margin-left:0;width:100%;padding:16px}.mobileMenu{display:block}
+    .span8,.span7,.span6,.span5,.span4{grid-column:span 12}
+    .stats{grid-template-columns:repeat(2,1fr)}
 }
-
 @media(max-width:700px){
-
-    .topbar{
-        align-items:flex-start;
-    }
-
-    .greeting h1{
-        font-size:22px;
-    }
-
-    .taskForm{
-        grid-template-columns:1fr;
-    }
-
-    .focusBox{
-        grid-template-columns:1fr;
-    }
-
-    .smallThings{
-        grid-template-columns:1fr;
-    }
-
-    .gallery{
-        grid-template-columns:1fr;
-    }
-
-    .videoGrid{
-        grid-template-columns:1fr;
-    }
-
-    .profitLossGrid{
-        grid-template-columns:1fr;
-    }
-
-    .plImage{
-        height:190px;
-    }
-
-}
-
-@media(max-width:500px){
-
-    .stats{
-        grid-template-columns:1fr 1fr;
-        gap:9px;
-    }
-
-    .stat{
-        padding:14px;
-    }
-
-    .statNum{
-        font-size:22px;
-    }
-
-    .card{
-        padding:15px;
-    }
-
+    .taskForm{grid-template-columns:1fr}.focusBox,.profitLossGrid,.choiceGrid{grid-template-columns:1fr}
+    .smallThings,.gallery,.videoGrid{grid-template-columns:1fr}
+    .card{padding:15px}.plImage{height:190px}.greeting h1{font-size:22px}
 }
 </style>
 </head>
 
-
 <body>
-
 <div class="app">
 
-<!-- ======================================================
-     SIDEBAR
-====================================================== -->
-
 <aside class="sidebar" id="sidebar">
-
     <div class="logo">
-
-        <div class="logoIcon">
-            ⚡
-        </div>
-
-        <div>
-            LifeFlow
-
-            <small>
-                Your life, organized.
-            </small>
-        </div>
-
+        <div class="logoIcon">⚡</div>
+        <div>LifeFlow<small>Your life, organized.</small></div>
     </div>
-
 
     <div class="nav">
-
-        <button
-            class="active"
-            onclick="scrollToSection('dashboard')">
-            🏠 Dashboard
-        </button>
-
-        <button
-            onclick="scrollToSection('tasks')">
-            ✅ Daily Tasks
-        </button>
-
-        <button
-            onclick="scrollToSection('goals')">
-            🎯 Life Goals
-        </button>
-
-        <button
-            onclick="scrollToSection('habits')">
-            🔥 Habits
-        </button>
-
-        <button
-            onclick="scrollToSection('profitLoss')">
-            ⚖️ Profit / Loss
-        </button>
-
-        <button
-            onclick="scrollToSection('dreams')">
-            🖼️ Dream Gallery
-        </button>
-
-        <button
-            onclick="scrollToSection('videos')">
-            🎥 Dream Videos
-        </button>
-
-        <button
-            onclick="scrollToSection('impact')">
-            💡 Small Things
-        </button>
-
+        <button class="active" onclick="scrollToSection('dashboard')">🏠 Dashboard</button>
+        <button onclick="scrollToSection('tasks')">✅ Daily Tasks</button>
+        <button onclick="scrollToSection('goals')">🎯 Life Goals</button>
+        <button onclick="scrollToSection('habits')">🔥 Habits</button>
+        <button onclick="scrollToSection('profitLoss')">⚖️ Profit / Loss</button>
+        <button onclick="scrollToSection('dreams')">🖼️ Dream Gallery</button>
+        <button onclick="scrollToSection('videos')">🎥 Dream Videos</button>
+        <button onclick="scrollToSection('impact')">💡 Small Things</button>
     </div>
-
 
     <div class="sideBottom">
-
         <div class="miniQuote">
-
-            <b>
-                Today's reminder
-            </b>
-
-            <br><br>
-
-            Big results are usually created
-            by small actions repeated every day.
-
+            <b>Offline Life System</b><br><br>
+            Uploaded photos and videos are saved inside this browser.
         </div>
-
     </div>
-
 </aside>
-
-
-<!-- ======================================================
-     MAIN
-====================================================== -->
 
 <main class="main">
 
-
-<!-- TOP BAR -->
-
 <div class="topbar">
-
     <div class="greeting">
-
-        <h1 id="greetingTitle">
-            Good Evening 👋
-        </h1>
-
-        <p id="todayDate">
-            Loading date...
-        </p>
-
+        <h1 id="greetingTitle">Good Evening 👋</h1>
+        <p id="todayDate">Loading...</p>
     </div>
-
 
     <div class="topActions">
-
-        <button
-            class="iconBtn mobileMenu"
-            onclick="toggleSidebar()">
-            ☰
-        </button>
-
-        <button
-            class="iconBtn"
-            onclick="requestNotifications()"
-            title="Enable reminders">
-            🔔
-        </button>
-
-        <button
-            class="btn btnPrimary"
-            onclick="openTaskModal()">
-            + Task
-        </button>
-
+        <button class="iconBtn mobileMenu" onclick="toggleSidebar()">☰</button>
+        <button class="iconBtn" onclick="requestNotifications()" title="Notifications">🔔</button>
+        <button class="btn btnPrimary" onclick="openTaskModal()">+ Task</button>
     </div>
-
 </div>
-
-
-<!-- ======================================================
-     DASHBOARD
-====================================================== -->
 
 <section id="dashboard">
 
-
-<!-- STATS -->
-
 <div class="stats">
-
-    <div class="stat">
-
-        <div class="statIcon">
-            ✅
-        </div>
-
-        <div
-            class="statNum"
-            id="totalTasks">
-            0
-        </div>
-
-        <div class="muted">
-            Total Tasks
-        </div>
-
-    </div>
-
-
-    <div class="stat">
-
-        <div class="statIcon">
-            🎯
-        </div>
-
-        <div
-            class="statNum"
-            id="completedTasks">
-            0
-        </div>
-
-        <div class="muted">
-            Completed
-        </div>
-
-    </div>
-
-
-    <div class="stat">
-
-        <div class="statIcon">
-            🔥
-        </div>
-
-        <div
-            class="statNum"
-            id="currentStreak">
-            0
-        </div>
-
-        <div class="muted">
-            Day Streak
-        </div>
-
-    </div>
-
-
-    <div class="stat">
-
-        <div class="statIcon">
-            ⭐
-        </div>
-
-        <div
-            class="statNum"
-            id="productivity">
-            0%
-        </div>
-
-        <div class="muted">
-            Productivity
-        </div>
-
-    </div>
-
+    <div class="stat"><div class="statIcon">✅</div><div class="statNum" id="totalTasks">0</div><div class="muted">Total Tasks</div></div>
+    <div class="stat"><div class="statIcon">🎯</div><div class="statNum" id="completedTasks">0</div><div class="muted">Completed</div></div>
+    <div class="stat"><div class="statIcon">🔥</div><div class="statNum" id="currentStreak">0</div><div class="muted">Day Streak</div></div>
+    <div class="stat"><div class="statIcon">⭐</div><div class="statNum" id="productivity">0%</div><div class="muted">Productivity</div></div>
 </div>
-
 
 <br>
 
-
 <div class="grid">
 
-
-<!-- ======================================================
-     TODAY FOCUS
-====================================================== -->
-
 <div class="card span8">
-
     <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                Today's Focus
-            </div>
-
-            <div class="muted">
-                Focus on what really matters.
-            </div>
-
-        </div>
-
-        <button
-            class="btn btnGhost"
-            onclick="openTaskModal()">
-            Add
-        </button>
-
+        <div><div class="cardTitle">Today's Focus</div><div class="muted">Focus on what really matters.</div></div>
+        <button class="btn btnGhost" onclick="openTaskModal()">Add</button>
     </div>
-
 
     <div class="focusBox">
-
-        <div class="focusItem">
-
-            🎯
-
-            <span class="muted">
-                Main Goal
-            </span>
-
-            <b id="mainGoalText">
-                Complete your most important task
-            </b>
-
-        </div>
-
-
-        <div class="focusItem">
-
-            🧠
-
-            <span class="muted">
-                Daily Principle
-            </span>
-
-            <b>
-                Improve 1% every day.
-            </b>
-
-        </div>
-
+        <div class="focusItem">🎯 <span class="muted">Main Goal</span><b id="mainGoalText">Create your first goal</b></div>
+        <div class="focusItem">🧠 <span class="muted">Daily Principle</span><b>Improve 1% every day.</b></div>
     </div>
-
 
     <div class="progressWrap">
-
-        <div
-            style="
-            display:flex;
-            justify-content:space-between;
-            margin-bottom:7px;
-            ">
-
-            <span class="muted">
-                Today's progress
-            </span>
-
-            <b id="progressText">
-                0%
-            </b>
-
+        <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+            <span class="muted">Today's progress</span><b id="progressText">0%</b>
         </div>
-
-
-        <div class="progressBar">
-
-            <div
-                class="progressFill"
-                id="progressFill">
-            </div>
-
-        </div>
-
+        <div class="progressBar"><div class="progressFill" id="progressFill"></div></div>
     </div>
-
 </div>
-
-
-<!-- ======================================================
-     QUICK ADD
-====================================================== -->
 
 <div class="card span4">
-
-    <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                Quick Add
-            </div>
-
-            <div class="muted">
-                Don't let ideas disappear.
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <input
-        id="quickTask"
-        class="input"
-        placeholder="What needs to be done?"
-        onkeydown="
-        if(event.key==='Enter')
-        quickAddTask()
-        ">
-
-
+    <div class="cardHeader"><div><div class="cardTitle">Quick Add</div><div class="muted">Don't let ideas disappear.</div></div></div>
+    <input id="quickTask" class="input" placeholder="What needs to be done?" onkeydown="if(event.key==='Enter')quickAddTask()">
     <br><br>
-
-
-    <button
-        class="btn btnPrimary"
-        style="width:100%;"
-        onclick="quickAddTask()">
-
-        Add Task
-
-    </button>
-
+    <button class="btn btnPrimary" style="width:100%" onclick="quickAddTask()">Add Task</button>
 </div>
 
-
-<!-- ======================================================
-     DAILY TASKS
-====================================================== -->
-
-<div
-    class="card span7"
-    id="tasks">
-
+<div class="card span7" id="tasks">
     <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                Daily Tasks
-            </div>
-
-            <div class="muted">
-                Your tasks and reminders.
-            </div>
-
-        </div>
-
-
-        <input
-            id="taskSearch"
-            class="input"
-            style="width:180px"
-            placeholder="Search..."
-            oninput="renderTasks()">
-
+        <div><div class="cardTitle">Daily Tasks</div><div class="muted">Tasks, dates and alarms.</div></div>
+        <input id="taskSearch" class="input" style="width:180px" placeholder="Search..." oninput="renderTasks()">
     </div>
-
 
     <div class="taskForm">
-
-        <input
-            id="taskTitle"
-            class="input"
-            placeholder="Task name">
-
-        <input
-            id="taskDate"
-            class="input"
-            type="date">
-
-        <input
-            id="taskTime"
-            class="input"
-            type="time">
-
-        <button
-            class="btn btnPrimary"
-            onclick="addTask()">
-
-            Add
-
-        </button>
-
+        <input id="taskTitle" class="input" placeholder="Task name">
+        <input id="taskDate" class="input" type="date">
+        <input id="taskTime" class="input" type="time">
+        <button class="btn btnPrimary" onclick="addTask()">Add</button>
     </div>
 
-
-    <br>
-
-
-    <div
-        id="taskList"
-        class="taskList">
-    </div>
-
+    <br><div id="taskList" class="taskList"></div>
 </div>
-
-
-<!-- ======================================================
-     PRIORITY RADAR
-====================================================== -->
 
 <div class="card span5">
-
-    <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                Priority Radar
-            </div>
-
-            <div class="muted">
-                Spend your energy where it matters.
-            </div>
-
-        </div>
-
-    </div>
-
-
+    <div class="cardHeader"><div><div class="cardTitle">Priority Radar</div><div class="muted">Use your best energy wisely.</div></div></div>
     <div class="smallThings">
-
-        <div class="thing">
-
-            <span>
-                🔴
-            </span>
-
-            <p>
-                <b>
-                    Important + Urgent
-                </b>
-                <br>
-                Do first.
-            </p>
-
-        </div>
-
-
-        <div class="thing">
-
-            <span>
-                🟡
-            </span>
-
-            <p>
-                <b>
-                    Important
-                </b>
-                <br>
-                Schedule it.
-            </p>
-
-        </div>
-
-
-        <div class="thing">
-
-            <span>
-                🔵
-            </span>
-
-            <p>
-                <b>
-                    Low Priority
-                </b>
-                <br>
-                Do later.
-            </p>
-
-        </div>
-
-
-        <div class="thing">
-
-            <span>
-                ⚫
-            </span>
-
-            <p>
-                <b>
-                    Not Useful
-                </b>
-                <br>
-                Remove it.
-            </p>
-
-        </div>
-
+        <div class="thing"><span>🔴</span><p><b>Important + Urgent</b><br>Do first.</p></div>
+        <div class="thing"><span>🟡</span><p><b>Important</b><br>Schedule it.</p></div>
+        <div class="thing"><span>🔵</span><p><b>Low Priority</b><br>Do later.</p></div>
+        <div class="thing"><span>⚫</span><p><b>Not Useful</b><br>Remove it.</p></div>
     </div>
-
 </div>
 
-
-<!-- ======================================================
-     HABITS
-====================================================== -->
-
-<div
-    class="card span6"
-    id="habits">
-
+<div class="card span6" id="habits">
     <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                🔥 Daily Habits
-            </div>
-
-            <div class="muted">
-                Small actions build strong lives.
-            </div>
-
-        </div>
-
-
-        <button
-            class="btn btnSuccess"
-            onclick="completeHabit()">
-
-            + Today
-
-        </button>
-
+        <div><div class="cardTitle">🔥 Daily Habits</div><div class="muted">Small actions build strong lives.</div></div>
+        <button class="btn btnSuccess" onclick="completeHabit()">+ Today</button>
     </div>
-
-
-    <div
-        class="habitGrid"
-        id="habitGrid">
-    </div>
-
+    <div class="habitGrid" id="habitGrid"></div>
 </div>
 
-
-<!-- ======================================================
-     GOALS
-====================================================== -->
-
-<div
-    class="card span6"
-    id="goals">
-
+<div class="card span6" id="goals">
     <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                🎯 Life Goals
-            </div>
-
-            <div class="muted">
-                Keep your bigger picture visible.
-            </div>
-
-        </div>
-
-
-        <button
-            class="btn btnPrimary"
-            onclick="openGoalModal()">
-
-            + Goal
-
-        </button>
-
+        <div><div class="cardTitle">🎯 Life Goals</div><div class="muted">Keep the bigger picture visible.</div></div>
+        <button class="btn btnPrimary" onclick="openGoalModal()">+ Goal</button>
     </div>
-
-
-    <div
-        class="goalList"
-        id="goalList">
-    </div>
-
+    <div class="goalList" id="goalList"></div>
 </div>
 
-
-<!-- ======================================================
-     SMALL THINGS
-====================================================== -->
-
-<div
-    class="card span12"
-    id="impact">
-
-    <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                💡 Small Things That Create Big Difference
-            </div>
-
-            <div class="muted">
-                Tiny improvements compound over time.
-            </div>
-
-        </div>
-
-    </div>
-
-
+<div class="card span12" id="impact">
+    <div class="cardHeader"><div><div class="cardTitle">💡 Small Things That Create Big Difference</div><div class="muted">Tiny improvements compound over time.</div></div></div>
     <div class="smallThings">
-
-        <div class="thing">
-
-            <span>
-                ⏱️
-            </span>
-
-            <p>
-
-                <b>
-                    10 minutes of planning
-                </b>
-
-                <br>
-
-                Can save hours of confusion later.
-
-            </p>
-
-        </div>
-
-
-        <div class="thing">
-
-            <span>
-                📚
-            </span>
-
-            <p>
-
-                <b>
-                    20 minutes of learning
-                </b>
-
-                <br>
-
-                Daily learning compounds knowledge.
-
-            </p>
-
-        </div>
-
-
-        <div class="thing">
-
-            <span>
-                💧
-            </span>
-
-            <p>
-
-                <b>
-                    Take care of basics
-                </b>
-
-                <br>
-
-                Good basics support consistency.
-
-            </p>
-
-        </div>
-
-
-        <div class="thing">
-
-            <span>
-                📵
-            </span>
-
-            <p>
-
-                <b>
-                    Reduce distractions
-                </b>
-
-                <br>
-
-                Protect your attention.
-
-            </p>
-
-        </div>
-
-
-        <div class="thing">
-
-            <span>
-                📝
-            </span>
-
-            <p>
-
-                <b>
-                    Write tomorrow's top 3
-                </b>
-
-                <br>
-
-                Start the next day with clarity.
-
-            </p>
-
-        </div>
-
-
-        <div class="thing">
-
-            <span>
-                🚶
-            </span>
-
-            <p>
-
-                <b>
-                    Move your body
-                </b>
-
-                <br>
-
-                Small movement beats doing nothing.
-
-            </p>
-
-        </div>
-
+        <div class="thing"><span>⏱️</span><p><b>10 min planning</b><br>Can save hours of confusion.</p></div>
+        <div class="thing"><span>📚</span><p><b>20 min learning</b><br>Daily learning compounds.</p></div>
+        <div class="thing"><span>💧</span><p><b>Take care of basics</b><br>Strong basics support consistency.</p></div>
+        <div class="thing"><span>📵</span><p><b>Reduce distractions</b><br>Protect your attention.</p></div>
+        <div class="thing"><span>📝</span><p><b>Write tomorrow's top 3</b><br>Start with clarity.</p></div>
+        <div class="thing"><span>🚶</span><p><b>Move your body</b><br>Small movement beats nothing.</p></div>
     </div>
-
 </div>
 
-
-<!-- ======================================================
-     PROFIT LOSS
-====================================================== -->
-
-<div
-    class="card span12"
-    id="profitLoss">
-
+<div class="card span12" id="profitLoss">
     <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                ⚖️ Do It or Lose It
-            </div>
-
-            <div class="muted">
-                See the benefit of doing something
-                and the loss of skipping it.
-            </div>
-
-        </div>
-
-
-        <button
-            class="btn btnPrimary"
-            onclick="openProfitLossModal()">
-
-            + Add
-
-        </button>
-
+        <div><div class="cardTitle">⚖️ Do It or Lose It</div><div class="muted">Add a profit side and a loss side with your own images or links.</div></div>
+        <button class="btn btnPrimary" onclick="openProfitLossModal()">+ Add</button>
     </div>
-
-
-    <div
-        id="profitLossList"
-        class="profitLossList">
-    </div>
-
+    <div id="profitLossList" class="profitLossList"></div>
 </div>
 
-
-<!-- ======================================================
-     DREAM GALLERY
-====================================================== -->
-
-<div
-    class="card span7"
-    id="dreams">
-
+<div class="card span7" id="dreams">
     <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                🖼️ Dream Gallery
-            </div>
-
-            <div class="muted">
-                Keep your dreams visible.
-            </div>
-
-        </div>
-
-
-        <button
-            class="btn btnPrimary"
-            onclick="openDreamModal()">
-
-            + Dream
-
-        </button>
-
+        <div><div class="cardTitle">🖼️ Dream Gallery</div><div class="muted">Upload a photo or paste an image link.</div></div>
+        <button class="btn btnPrimary" onclick="openDreamModal()">+ Dream</button>
     </div>
-
-
-    <div
-        id="dreamGallery"
-        class="gallery">
-    </div>
-
+    <div id="dreamGallery" class="gallery"></div>
 </div>
 
-
-<!-- ======================================================
-     DREAM VIDEOS
-====================================================== -->
-
-<div
-    class="card span5"
-    id="videos">
-
+<div class="card span5" id="videos">
     <div class="cardHeader">
-
-        <div>
-
-            <div class="cardTitle">
-                🎥 Dream Videos
-            </div>
-
-            <div class="muted">
-                Motivation whenever you need it.
-            </div>
-
-        </div>
-
-
-        <button
-            class="btn btnPrimary"
-            onclick="openVideoModal()">
-
-            + Video
-
-        </button>
-
+        <div><div class="cardTitle">🎥 Dream Videos</div><div class="muted">Upload a video or add a YouTube link.</div></div>
+        <button class="btn btnPrimary" onclick="openVideoModal()">+ Video</button>
     </div>
-
-
-    <div
-        id="videoGrid"
-        class="videoGrid">
-    </div>
-
+    <div id="videoGrid" class="videoGrid"></div>
 </div>
 
-
 </div>
-
 </section>
-
 </main>
-
 </div>
 
-
-<!-- ======================================================
-     TASK MODAL
-====================================================== -->
-
-<div
-    class="modal"
-    id="taskModal">
-
-    <div class="modalBox">
-
-        <div class="modalHeader">
-
-            <h2>
-                Add Reminder Task
-            </h2>
-
-            <button
-                class="iconBtn"
-                onclick="closeModal('taskModal')">
-
-                ✕
-
-            </button>
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Task
-            </label>
-
-            <input
-                id="modalTaskTitle"
-                class="input"
-                placeholder="e.g. Study Python">
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Date
-            </label>
-
-            <input
-                id="modalTaskDate"
-                class="input"
-                type="date">
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Alarm Time
-            </label>
-
-            <input
-                id="modalTaskTime"
-                class="input"
-                type="time">
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Priority
-            </label>
-
-            <select
-                id="modalTaskPriority"
-                class="input">
-
-                <option value="normal">
-                    Normal
-                </option>
-
-                <option value="high">
-                    High
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <button
-            class="btn btnPrimary"
-            style="width:100%;"
-            onclick="saveModalTask()">
-
-            Create Reminder
-
-        </button>
-
-    </div>
-
+<!-- TASK MODAL -->
+<div class="modal" id="taskModal">
+<div class="modalBox">
+<div class="modalHeader"><h2>Add Reminder Task</h2><button class="iconBtn" onclick="closeModal('taskModal')">✕</button></div>
+<div class="formGroup"><label>Task</label><input id="modalTaskTitle" class="input" placeholder="e.g. Study Python"></div>
+<div class="formGroup"><label>Date</label><input id="modalTaskDate" class="input" type="date"></div>
+<div class="formGroup"><label>Alarm Time</label><input id="modalTaskTime" class="input" type="time"></div>
+<div class="formGroup"><label>Priority</label><select id="modalTaskPriority" class="input"><option value="normal">Normal</option><option value="high">High</option></select></div>
+<button class="btn btnPrimary" style="width:100%" onclick="saveModalTask()">Create Reminder</button>
+</div>
 </div>
 
-
-<!-- ======================================================
-     GOAL MODAL
-====================================================== -->
-
-<div
-    class="modal"
-    id="goalModal">
-
-    <div class="modalBox">
-
-        <div class="modalHeader">
-
-            <h2>
-                Create Goal
-            </h2>
-
-            <button
-                class="iconBtn"
-                onclick="closeModal('goalModal')">
-
-                ✕
-
-            </button>
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Goal name
-            </label>
-
-            <input
-                id="goalTitle"
-                class="input"
-                placeholder="e.g. Learn Web Development">
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Progress %
-            </label>
-
-            <input
-                id="goalProgress"
-                class="input"
-                type="number"
-                min="0"
-                max="100"
-                value="10">
-
-        </div>
-
-
-        <button
-            class="btn btnPrimary"
-            style="width:100%;"
-            onclick="saveGoal()">
-
-            Create Goal
-
-        </button>
-
-    </div>
-
+<!-- GOAL MODAL -->
+<div class="modal" id="goalModal">
+<div class="modalBox">
+<div class="modalHeader"><h2>Create Goal</h2><button class="iconBtn" onclick="closeModal('goalModal')">✕</button></div>
+<div class="formGroup"><label>Goal name</label><input id="goalTitle" class="input" placeholder="e.g. Learn Web Development"></div>
+<div class="formGroup"><label>Progress %</label><input id="goalProgress" class="input" type="number" min="0" max="100" value="10"></div>
+<button class="btn btnPrimary" style="width:100%" onclick="saveGoal()">Create Goal</button>
+</div>
 </div>
 
+<!-- DREAM MODAL -->
+<div class="modal" id="dreamModal">
+<div class="modalBox">
+<div class="modalHeader"><h2>Add Dream</h2><button class="iconBtn" onclick="closeModal('dreamModal')">✕</button></div>
 
-<!-- ======================================================
-     DREAM MODAL
-====================================================== -->
-
-<div
-    class="modal"
-    id="dreamModal">
-
-    <div class="modalBox">
-
-        <div class="modalHeader">
-
-            <h2>
-                Add Dream
-            </h2>
-
-            <button
-                class="iconBtn"
-                onclick="closeModal('dreamModal')">
-
-                ✕
-
-            </button>
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Dream title
-            </label>
-
-            <input
-                id="dreamTitle"
-                class="input"
-                placeholder="My dream house">
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Image URL
-            </label>
-
-            <input
-                id="dreamImage"
-                class="input"
-                placeholder="https://...">
-
-        </div>
-
-
-        <button
-            class="btn btnPrimary"
-            style="width:100%;"
-            onclick="saveDream()">
-
-            Add to Dream Gallery
-
-        </button>
-
-    </div>
-
+<div class="choiceGrid">
+<button class="choice" onclick="showDreamMethod('upload')">📁 Upload Photo<br><span class="muted">Works offline after saving</span></button>
+<button class="choice" onclick="showDreamMethod('url')">🔗 Use Photo Link<br><span class="muted">Needs internet for the link</span></button>
 </div>
 
+<br>
 
-<!-- ======================================================
-     VIDEO MODAL
-====================================================== -->
-
-<div
-    class="modal"
-    id="videoModal">
-
-    <div class="modalBox">
-
-        <div class="modalHeader">
-
-            <h2>
-                Add Dream Video
-            </h2>
-
-            <button
-                class="iconBtn"
-                onclick="closeModal('videoModal')">
-
-                ✕
-
-            </button>
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Video title
-            </label>
-
-            <input
-                id="videoTitle"
-                class="input"
-                placeholder="Motivation">
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                YouTube URL
-            </label>
-
-            <input
-                id="videoUrl"
-                class="input"
-                placeholder="https://youtube.com/watch?v=...">
-
-        </div>
-
-
-        <button
-            class="btn btnPrimary"
-            style="width:100%;"
-            onclick="saveVideo()">
-
-            Add Video
-
-        </button>
-
-    </div>
-
+<div id="dreamUploadBox" style="display:none">
+<div class="formGroup"><label>Choose photo</label><input id="dreamFile" class="input" type="file" accept="image/*"></div>
+<div id="dreamPreview" class="preview"></div>
 </div>
 
-
-<!-- ======================================================
-     PROFIT LOSS MODAL
-====================================================== -->
-
-<div
-    class="modal"
-    id="profitLossModal">
-
-    <div class="modalBox">
-
-        <div class="modalHeader">
-
-            <h2>
-                ⚖️ Add Profit vs Loss
-            </h2>
-
-            <button
-                class="iconBtn"
-                onclick="closeModal('profitLossModal')">
-
-                ✕
-
-            </button>
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                Task / Decision
-            </label>
-
-            <input
-                id="plTask"
-                class="input"
-                placeholder="e.g. Learn coding for 1 hour">
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                🟢 Profit — अगर मैं करूँ तो क्या फायदा होगा?
-            </label>
-
-            <textarea
-                id="plProfit"
-                class="input"
-                rows="4"
-                placeholder="e.g. मेरी coding skill improve होगी...">
-            </textarea>
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                🟢 Profit Image URL
-            </label>
-
-            <input
-                id="plProfitImage"
-                class="input"
-                placeholder="https://...">
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                🔴 Loss — अगर मैं नहीं करूँ तो क्या नुकसान होगा?
-            </label>
-
-            <textarea
-                id="plLoss"
-                class="input"
-                rows="4"
-                placeholder="e.g. मेरा goal delay होगा...">
-            </textarea>
-
-        </div>
-
-
-        <div class="formGroup">
-
-            <label>
-                🔴 Loss Image URL
-            </label>
-
-            <input
-                id="plLossImage"
-                class="input"
-                placeholder="https://...">
-
-        </div>
-
-
-        <button
-            class="btn btnPrimary"
-            style="width:100%;"
-            onclick="saveProfitLoss()">
-
-            Save Profit vs Loss
-
-        </button>
-
-    </div>
-
+<div id="dreamUrlBox" style="display:none">
+<div class="formGroup"><label>Dream title</label><input id="dreamUrlTitle" class="input" placeholder="My Dream House"></div>
+<div class="formGroup"><label>Image URL</label><input id="dreamUrl" class="input" placeholder="https://..."></div>
 </div>
 
-
-<!-- ======================================================
-     TOAST
-====================================================== -->
-
-<div
-    class="toast"
-    id="toast">
-
-    <div
-        class="toastTitle"
-        id="toastTitle">
-        Reminder
-    </div>
-
-    <div
-        class="toastText"
-        id="toastText">
-        Task reminder
-    </div>
-
+<div id="dreamUploadTitle" style="display:none" class="formGroup">
+<label>Dream title</label><input id="dreamFileTitle" class="input" placeholder="My Dream House">
 </div>
 
+<br>
+<button class="btn btnPrimary" style="width:100%" onclick="saveDream()">Save Dream</button>
+</div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="modal" id="videoModal">
+<div class="modalBox">
+<div class="modalHeader"><h2>Add Dream Video</h2><button class="iconBtn" onclick="closeModal('videoModal')">✕</button></div>
+
+<div class="choiceGrid">
+<button class="choice" onclick="showVideoMethod('upload')">📁 Upload Video<br><span class="muted">Saved in browser</span></button>
+<button class="choice" onclick="showVideoMethod('youtube')">▶️ YouTube Link<br><span class="muted">Needs internet</span></button>
+</div>
+
+<br>
+
+<div id="videoUploadBox" style="display:none">
+<div class="formGroup"><label>Video title</label><input id="videoFileTitle" class="input" placeholder="My Motivation Video"></div>
+<div class="formGroup"><label>Choose video</label><input id="videoFile" class="input" type="file" accept="video/*"></div>
+<div id="videoPreview" class="preview"></div>
+<div class="fileHint">Large videos may use browser storage quickly.</div>
+</div>
+
+<div id="youtubeBox" style="display:none">
+<div class="formGroup"><label>Video title</label><input id="youtubeTitle" class="input" placeholder="Motivation"></div>
+<div class="formGroup"><label>YouTube URL</label><input id="youtubeUrl" class="input" placeholder="https://youtube.com/watch?v=..."></div>
+</div>
+
+<br>
+<button class="btn btnPrimary" style="width:100%" onclick="saveVideo()">Save Video</button>
+</div>
+</div>
+
+<!-- PROFIT LOSS MODAL -->
+<div class="modal" id="profitLossModal">
+<div class="modalBox">
+<div class="modalHeader"><h2>⚖️ Add Profit vs Loss</h2><button class="iconBtn" onclick="closeModal('profitLossModal')">✕</button></div>
+
+<div class="formGroup"><label>Task / Decision</label><input id="plTask" class="input" placeholder="e.g. Learn coding for 1 hour"></div>
+
+<div class="formGroup"><label>🟢 Profit text</label><textarea id="plProfit" class="input" rows="4" placeholder="अगर मैं करूँ तो क्या फायदा होगा?"></textarea></div>
+
+<div class="choiceGrid">
+<button class="choice" onclick="showPLMethod('profit','upload')">📁 Upload Profit Photo</button>
+<button class="choice" onclick="showPLMethod('profit','url')">🔗 Profit Photo Link</button>
+</div>
+
+<div id="plProfitUploadBox" style="display:none;margin-top:10px">
+<input id="plProfitFile" class="input" type="file" accept="image/*">
+</div>
+
+<div id="plProfitUrlBox" style="display:none;margin-top:10px">
+<input id="plProfitUrl" class="input" placeholder="https://...">
+</div>
+
+<br>
+
+<div class="formGroup"><label>🔴 Loss text</label><textarea id="plLoss" class="input" rows="4" placeholder="अगर मैं नहीं करूँ तो क्या नुकसान होगा?"></textarea></div>
+
+<div class="choiceGrid">
+<button class="choice" onclick="showPLMethod('loss','upload')">📁 Upload Loss Photo</button>
+<button class="choice" onclick="showPLMethod('loss','url')">🔗 Loss Photo Link</button>
+</div>
+
+<div id="plLossUploadBox" style="display:none;margin-top:10px">
+<input id="plLossFile" class="input" type="file" accept="image/*">
+</div>
+
+<div id="plLossUrlBox" style="display:none;margin-top:10px">
+<input id="plLossUrl" class="input" placeholder="https://...">
+</div>
+
+<br>
+<button class="btn btnPrimary" style="width:100%" onclick="saveProfitLoss()">Save Profit vs Loss</button>
+</div>
+</div>
+
+<div class="toast" id="toast">
+<div class="toastTitle" id="toastTitle">Reminder</div>
+<div class="toastText" id="toastText">Task reminder</div>
+</div>
 
 <script>
+/* =========================
+   IndexedDB for offline media
+========================= */
+const DB_NAME="LifeFlowOfflineDB";
+const DB_VERSION=1;
+let db;
 
-/* =========================================================
-   DATA
-========================================================= */
-
-let tasks =
-    JSON.parse(
-        localStorage.getItem("lifeflow_tasks")
-    ) || [];
-
-
-let goals =
-    JSON.parse(
-        localStorage.getItem("lifeflow_goals")
-    ) || [
-
-        {
-            id:1,
-
-            title:"Become better at coding",
-
-            progress:25
-        }
-
-    ];
-
-
-let dreams =
-    JSON.parse(
-        localStorage.getItem("lifeflow_dreams")
-    ) || [
-
-        {
-            id:1,
-
-            title:"My Dream Life",
-
-            image:
-            "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=900&q=80"
-        }
-
-    ];
-
-
-let videos =
-    JSON.parse(
-        localStorage.getItem("lifeflow_videos")
-    ) || [];
-
-
-let habitDays =
-    JSON.parse(
-        localStorage.getItem("lifeflow_habits")
-    ) || [];
-
-
-let profitLossData =
-    JSON.parse(
-        localStorage.getItem("lifeflow_profitloss")
-    ) || [];
-
-
-let notifiedTasks =
-    JSON.parse(
-        localStorage.getItem("lifeflow_notified")
-    ) || [];
-
-
-/* =========================================================
-   INIT
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
-
-        setTodayDate();
-
-        document
-            .getElementById("taskDate")
-            .value = localDateString();
-
-
-        renderTasks();
-
-        renderGoals();
-
-        renderDreams();
-
-        renderVideos();
-
-        renderHabits();
-
-        renderProfitLoss();
-
-        updateStats();
-
-        setInterval(
-            checkReminders,
-            15000
-        );
-
-    }
-);
-
-
-/* =========================================================
-   DATE
-========================================================= */
-
-function localDateString(){
-
-    const d =
-        new Date();
-
-    const y =
-        d.getFullYear();
-
-    const m =
-        String(
-            d.getMonth()+1
-        ).padStart(2,"0");
-
-    const day =
-        String(
-            d.getDate()
-        ).padStart(2,"0");
-
-    return `${y}-${m}-${day}`;
+function openDB(){
+    return new Promise((resolve,reject)=>{
+        const request=indexedDB.open(DB_NAME,DB_VERSION);
+        request.onupgradeneeded=e=>{
+            const d=e.target.result;
+            if(!d.objectStoreNames.contains("media")) d.createObjectStore("media",{keyPath:"id"});
+        };
+        request.onsuccess=e=>{db=e.target.result;resolve(db)};
+        request.onerror=()=>reject(request.error);
+    });
 }
 
-
-function setTodayDate(){
-
-    const now =
-        new Date();
-
-
-    document
-        .getElementById("todayDate")
-        .textContent =
-
-        now.toLocaleDateString(
-            "en-IN",
-            {
-                weekday:"long",
-                year:"numeric",
-                month:"long",
-                day:"numeric"
-            }
-        );
-
-
-    const hour =
-        now.getHours();
-
-
-    let greeting =
-        "Good Morning ☀️";
-
-
-    if(hour >= 12 && hour < 18){
-
-        greeting =
-            "Good Afternoon 🌤️";
-
-    }
-
-
-    if(hour >= 18){
-
-        greeting =
-            "Good Evening 🌙";
-
-    }
-
-
-    if(hour >= 22){
-
-        greeting =
-            "Good Night 🌃";
-
-    }
-
-
-    document
-        .getElementById("greetingTitle")
-        .textContent = greeting;
-
+function dbPut(item){
+    return new Promise((resolve,reject)=>{
+        const tx=db.transaction("media","readwrite");
+        tx.objectStore("media").put(item);
+        tx.oncomplete=()=>resolve();
+        tx.onerror=()=>reject(tx.error);
+    });
 }
 
+function dbGet(id){
+    return new Promise((resolve,reject)=>{
+        const tx=db.transaction("media","readonly");
+        const req=tx.objectStore("media").get(id);
+        req.onsuccess=()=>resolve(req.result);
+        req.onerror=()=>reject(req.error);
+    });
+}
 
-/* =========================================================
-   STORAGE
-========================================================= */
+function dbDelete(id){
+    return new Promise((resolve,reject)=>{
+        const tx=db.transaction("media","readwrite");
+        tx.objectStore("media").delete(id);
+        tx.oncomplete=()=>resolve();
+        tx.onerror=()=>reject(tx.error);
+    });
+}
+
+/* =========================
+   Data
+========================= */
+let tasks=JSON.parse(localStorage.getItem("lifeflow_tasks")||"[]");
+let goals=JSON.parse(localStorage.getItem("lifeflow_goals")||"[]");
+let dreams=JSON.parse(localStorage.getItem("lifeflow_dreams")||"[]");
+let videos=JSON.parse(localStorage.getItem("lifeflow_videos")||"[]");
+let habitDays=JSON.parse(localStorage.getItem("lifeflow_habits")||"[]");
+let profitLossData=JSON.parse(localStorage.getItem("lifeflow_profitloss")||"[]");
+let notifiedTasks=JSON.parse(localStorage.getItem("lifeflow_notified")||"[]");
+
+let dreamMethod="upload";
+let videoMethod="upload";
+let plMethods={profit:"upload",loss:"upload"};
+let objectUrls=[];
 
 function saveAll(){
-
-    localStorage.setItem(
-        "lifeflow_tasks",
-        JSON.stringify(tasks)
-    );
-
-
-    localStorage.setItem(
-        "lifeflow_goals",
-        JSON.stringify(goals)
-    );
-
-
-    localStorage.setItem(
-        "lifeflow_dreams",
-        JSON.stringify(dreams)
-    );
-
-
-    localStorage.setItem(
-        "lifeflow_videos",
-        JSON.stringify(videos)
-    );
-
-
-    localStorage.setItem(
-        "lifeflow_habits",
-        JSON.stringify(habitDays)
-    );
-
-
-    localStorage.setItem(
-        "lifeflow_profitloss",
-        JSON.stringify(profitLossData)
-    );
-
-
-    localStorage.setItem(
-        "lifeflow_notified",
-        JSON.stringify(notifiedTasks)
-    );
-
+    localStorage.setItem("lifeflow_tasks",JSON.stringify(tasks));
+    localStorage.setItem("lifeflow_goals",JSON.stringify(goals));
+    localStorage.setItem("lifeflow_dreams",JSON.stringify(dreams));
+    localStorage.setItem("lifeflow_videos",JSON.stringify(videos));
+    localStorage.setItem("lifeflow_habits",JSON.stringify(habitDays));
+    localStorage.setItem("lifeflow_profitloss",JSON.stringify(profitLossData));
+    localStorage.setItem("lifeflow_notified",JSON.stringify(notifiedTasks));
 }
 
-
-/* =========================================================
-   TASKS
-========================================================= */
-
-function addTask(){
-
-    const title =
-        document
-        .getElementById("taskTitle")
-        .value
-        .trim();
-
-
-    const date =
-        document
-        .getElementById("taskDate")
-        .value ||
-        localDateString();
-
-
-    const time =
-        document
-        .getElementById("taskTime")
-        .value;
-
-
-    if(!title){
-
-        showToast(
-            "Task missing",
-            "Please enter a task name."
-        );
-
-        return;
-
-    }
-
-
-    tasks.push({
-
-        id:Date.now(),
-
-        title:title,
-
-        date:date,
-
-        time:time,
-
-        priority:"normal",
-
-        completed:false
-
-    });
-
-
-    saveAll();
-
-
-    document
-        .getElementById("taskTitle")
-        .value = "";
-
-
-    document
-        .getElementById("taskTime")
-        .value = "";
-
-
-    renderTasks();
-
-    updateStats();
-
-
-    showToast(
-        "Task added ✅",
-        time
-        ? `Reminder set for ${time}`
-        : "Task added."
-    );
-
+function localDateString(){
+    const d=new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
-
-
-function quickAddTask(){
-
-    const input =
-        document
-        .getElementById("quickTask");
-
-
-    const title =
-        input.value.trim();
-
-
-    if(!title){
-
-        return;
-
-    }
-
-
-    tasks.push({
-
-        id:Date.now(),
-
-        title:title,
-
-        date:localDateString(),
-
-        time:"",
-
-        priority:"normal",
-
-        completed:false
-
-    });
-
-
-    input.value = "";
-
-
-    saveAll();
-
-    renderTasks();
-
-    updateStats();
-
-
-    showToast(
-        "Quick task added",
-        title
-    );
-
-}
-
-
-function renderTasks(){
-
-    const list =
-        document
-        .getElementById("taskList");
-
-
-    const search =
-        document
-        .getElementById("taskSearch")
-        .value
-        .toLowerCase();
-
-
-    let filtered =
-        tasks.filter(
-            t =>
-            t.title
-            .toLowerCase()
-            .includes(search)
-        );
-
-
-    filtered.sort(
-        (a,b)=>{
-
-            if(
-                a.completed !==
-                b.completed
-            ){
-
-                return a.completed -
-                    b.completed;
-
-            }
-
-
-            return (
-                a.date + a.time
-            ).localeCompare(
-                b.date + b.time
-            );
-
-        }
-    );
-
-
-    if(filtered.length === 0){
-
-        list.innerHTML = `
-
-            <div
-                style="
-                text-align:center;
-                padding:40px;
-                color:#8c9ab0;
-                ">
-
-                No tasks found.<br><br>
-
-                Add your first task 🚀
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    list.innerHTML =
-        filtered
-        .map(
-            task => `
-
-            <div class="
-                task
-                ${task.completed ? "done" : ""}
-            ">
-
-                <button
-                    class="check"
-                    onclick="
-                    toggleTask(${task.id})
-                    ">
-                </button>
-
-
-                <div class="taskBody">
-
-                    <div class="taskName">
-
-                        ${escapeHtml(
-                            task.title
-                        )}
-
-                    </div>
-
-
-                    <div class="taskMeta">
-
-                        <span>
-                            📅 ${task.date}
-                        </span>
-
-
-                        ${
-                            task.time
-                            ?
-                            `
-                            <span>
-                                ⏰ ${task.time}
-                            </span>
-                            `
-                            :
-                            ""
-                        }
-
-
-                        ${
-                            task.priority === "high"
-                            ?
-                            `
-                            <span class="high">
-                                🔥 High Priority
-                            </span>
-                            `
-                            :
-                            `
-                            <span class="tag">
-                                Normal
-                            </span>
-                            `
-                        }
-
-                    </div>
-
-                </div>
-
-
-                <div class="taskActions">
-
-                    <button
-                        class="smallBtn"
-                        onclick="
-                        deleteTask(${task.id})
-                        ">
-
-                        🗑️
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        `
-        )
-        .join("");
-
-}
-
-
-function toggleTask(id){
-
-    const task =
-        tasks.find(
-            t => t.id === id
-        );
-
-
-    if(!task){
-
-        return;
-
-    }
-
-
-    task.completed =
-        !task.completed;
-
-
-    saveAll();
-
-    renderTasks();
-
-    updateStats();
-
-
-    if(task.completed){
-
-        showToast(
-            "Great job! 🎉",
-            "One more small win completed."
-        );
-
-    }
-
-}
-
-
-function deleteTask(id){
-
-    tasks =
-        tasks.filter(
-            t => t.id !== id
-        );
-
-
-    saveAll();
-
-    renderTasks();
-
-    updateStats();
-
-
-    showToast(
-        "Task deleted",
-        "Task removed."
-    );
-
-}
-
-
-/* =========================================================
-   STATS
-========================================================= */
-
-function updateStats(){
-
-    const total =
-        tasks.length;
-
-
-    const completed =
-        tasks.filter(
-            t => t.completed
-        ).length;
-
-
-    const percent =
-        total
-        ?
-        Math.round(
-            (completed / total) * 100
-        )
-        :
-        0;
-
-
-    document
-        .getElementById("totalTasks")
-        .textContent = total;
-
-
-    document
-        .getElementById("completedTasks")
-        .textContent = completed;
-
-
-    document
-        .getElementById("productivity")
-        .textContent =
-        percent + "%";
-
-
-    document
-        .getElementById("progressText")
-        .textContent =
-        percent + "%";
-
-
-    document
-        .getElementById("progressFill")
-        .style.width =
-        percent + "%";
-
-
-    const mainGoal =
-        goals.find(
-            g => g.progress < 100
-        );
-
-
-    document
-        .getElementById("mainGoalText")
-        .textContent =
-        mainGoal
-        ?
-        mainGoal.title
-        :
-        "Create your next important goal";
-
-}
-
-
-/* =========================================================
-   TASK MODAL
-========================================================= */
-
-function openTaskModal(){
-
-    document
-        .getElementById("taskModal")
-        .classList.add("show");
-
-
-    document
-        .getElementById("modalTaskDate")
-        .value =
-        localDateString();
-
-}
-
-
-function saveModalTask(){
-
-    const title =
-        document
-        .getElementById("modalTaskTitle")
-        .value
-        .trim();
-
-
-    const date =
-        document
-        .getElementById("modalTaskDate")
-        .value ||
-        localDateString();
-
-
-    const time =
-        document
-        .getElementById("modalTaskTime")
-        .value;
-
-
-    const priority =
-        document
-        .getElementById("modalTaskPriority")
-        .value;
-
-
-    if(!title){
-
-        showToast(
-            "Task missing",
-            "Enter the task name first."
-        );
-
-        return;
-
-    }
-
-
-    tasks.push({
-
-        id:Date.now(),
-
-        title:title,
-
-        date:date,
-
-        time:time,
-
-        priority:priority,
-
-        completed:false
-
-    });
-
-
-    saveAll();
-
-    renderTasks();
-
-    updateStats();
-
-
-    closeModal(
-        "taskModal"
-    );
-
-
-    document
-        .getElementById("modalTaskTitle")
-        .value = "";
-
-
-    document
-        .getElementById("modalTaskTime")
-        .value = "";
-
-
-    showToast(
-        "Reminder created ⏰",
-        time
-        ?
-        `Scheduled for ${time}`
-        :
-        "Task created."
-    );
-
-}
-
-
-/* =========================================================
-   REMINDERS
-========================================================= */
-
-function checkReminders(){
-
-    const now =
-        new Date();
-
-
-    const today =
-        localDateString();
-
-
-    const hh =
-        String(
-            now.getHours()
-        ).padStart(2,"0");
-
-
-    const mm =
-        String(
-            now.getMinutes()
-        ).padStart(2,"0");
-
-
-    const currentTime =
-        `${hh}:${mm}`;
-
-
-    tasks.forEach(
-        task => {
-
-            if(
-                task.completed ||
-                !task.time ||
-                task.date !== today
-            ){
-
-                return;
-
-            }
-
-
-            const key =
-                `${task.id}-${today}-${task.time}`;
-
-
-            if(
-                task.time === currentTime &&
-                !notifiedTasks.includes(key)
-            ){
-
-                notifiedTasks.push(key);
-
-                saveAll();
-
-
-                showToast(
-                    "⏰ Task Reminder",
-                    task.title
-                );
-
-
-                playAlarm();
-
-
-                sendNotification(
-                    "LifeFlow Reminder",
-                    task.title
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-function requestNotifications(){
-
-    if(!("Notification" in window)){
-
-        showToast(
-            "Not supported",
-            "This browser does not support notifications."
-        );
-
-        return;
-
-    }
-
-
-    Notification
-        .requestPermission()
-        .then(
-            permission => {
-
-                if(
-                    permission === "granted"
-                ){
-
-                    showToast(
-                        "Notifications enabled ✅",
-                        "Your reminders can notify you."
-                    );
-
-                }
-                else{
-
-                    showToast(
-                        "Notifications blocked",
-                        "Enable notifications in browser settings."
-                    );
-
-                }
-
-            }
-        );
-
-}
-
-
-function sendNotification(
-    title,
-    body
-){
-
-    if(
-        "Notification" in window &&
-        Notification.permission === "granted"
-    ){
-
-        new Notification(
-            title,
-            {
-                body:body
-            }
-        );
-
-    }
-
-}
-
-
-function playAlarm(){
-
-    try{
-
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-
-        const ctx =
-            new AudioContext();
-
-
-        const oscillator =
-            ctx.createOscillator();
-
-
-        const gain =
-            ctx.createGain();
-
-
-        oscillator.connect(gain);
-
-        gain.connect(
-            ctx.destination
-        );
-
-
-        oscillator.frequency.value =
-            880;
-
-
-        oscillator.type =
-            "sine";
-
-
-        gain.gain.value =
-            .12;
-
-
-        oscillator.start();
-
-
-        oscillator.stop(
-            ctx.currentTime + .6
-        );
-
-    }
-    catch(e){}
-
-}
-
-
-/* =========================================================
-   GOALS
-========================================================= */
-
-function openGoalModal(){
-
-    document
-        .getElementById("goalModal")
-        .classList.add("show");
-
-}
-
-
-function saveGoal(){
-
-    const title =
-        document
-        .getElementById("goalTitle")
-        .value
-        .trim();
-
-
-    const progress =
-        Number(
-            document
-            .getElementById("goalProgress")
-            .value
-        );
-
-
-    if(!title){
-
-        return;
-
-    }
-
-
-    goals.push({
-
-        id:Date.now(),
-
-        title:title,
-
-        progress:
-            Math.max(
-                0,
-                Math.min(
-                    100,
-                    progress
-                )
-            )
-
-    });
-
-
-    saveAll();
-
-    renderGoals();
-
-    updateStats();
-
-
-    closeModal(
-        "goalModal"
-    );
-
-
-    document
-        .getElementById("goalTitle")
-        .value = "";
-
-}
-
-
-function renderGoals(){
-
-    const list =
-        document
-        .getElementById("goalList");
-
-
-    if(goals.length === 0){
-
-        list.innerHTML = `
-            <div class="muted">
-                No goals yet.
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    list.innerHTML =
-        goals
-        .map(
-            goal => `
-
-                <div class="goal">
-
-                    <div class="goalTop">
-
-                        <b>
-                            ${escapeHtml(
-                                goal.title
-                            )}
-                        </b>
-
-                        <span>
-                            ${goal.progress}%
-                        </span>
-
-                    </div>
-
-
-                    <div class="goalProgress">
-
-                        <div
-                            class="goalProgressBar">
-
-                            <div
-                                class="goalProgressFill"
-                                style="
-                                width:
-                                ${goal.progress}%;
-                                ">
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `
-        )
-        .join("");
-
-}
-
-
-/* =========================================================
-   HABITS
-========================================================= */
-
-function renderHabits(){
-
-    const container =
-        document
-        .getElementById("habitGrid");
-
-
-    container.innerHTML = "";
-
-
-    const now =
-        new Date();
-
-
-    for(
-        let i=6;
-        i>=0;
-        i--
-    ){
-
-        const d =
-            new Date(now);
-
-
-        d.setDate(
-            now.getDate() - i
-        );
-
-
-        const key =
-            formatDate(d);
-
-
-        const active =
-            habitDays
-            .includes(key);
-
-
-        container.innerHTML += `
-
-            <div
-                class="
-                habitDay
-                ${active ? "active" : ""}
-                ">
-
-                <b>
-                    ${d.toLocaleDateString(
-                        "en",
-                        {
-                            weekday:"short"
-                        }
-                    )}
-                </b>
-
-                <br>
-
-                ${d.getDate()}
-
-                <br>
-
-                ${active ? "✓" : "·"}
-
-            </div>
-
-        `;
-
-    }
-
-
-    currentStreak();
-
-}
-
-
-function completeHabit(){
-
-    const today =
-        localDateString();
-
-
-    if(
-        !habitDays.includes(today)
-    ){
-
-        habitDays.push(today);
-
-        saveAll();
-
-        renderHabits();
-
-
-        showToast(
-            "Habit completed 🔥",
-            "Small action. Big compound effect."
-        );
-
-    }
-    else{
-
-        showToast(
-            "Already completed ✅",
-            "Today's habit is already done."
-        );
-
-    }
-
-}
-
-
-function currentStreak(){
-
-    let streak = 0;
-
-
-    const d =
-        new Date();
-
-
-    while(true){
-
-        const key =
-            formatDate(d);
-
-
-        if(
-            habitDays.includes(key)
-        ){
-
-            streak++;
-
-            d.setDate(
-                d.getDate() - 1
-            );
-
-        }
-        else{
-
-            break;
-
-        }
-
-    }
-
-
-    document
-        .getElementById("currentStreak")
-        .textContent =
-        streak;
-
-}
-
-
 function formatDate(d){
-
-    const y =
-        d.getFullYear();
-
-
-    const m =
-        String(
-            d.getMonth()+1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            d.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    return `${y}-${m}-${day}`;
-
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
-
-
-/* =========================================================
-   DREAMS
-========================================================= */
-
-function openDreamModal(){
-
-    document
-        .getElementById("dreamModal")
-        .classList.add("show");
-
+function esc(s){
+    return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
-
-
-function saveDream(){
-
-    const title =
-        document
-        .getElementById("dreamTitle")
-        .value
-        .trim();
-
-
-    const image =
-        document
-        .getElementById("dreamImage")
-        .value
-        .trim();
-
-
-    if(
-        !title ||
-        !image
-    ){
-
-        showToast(
-            "Missing details",
-            "Enter dream title and image URL."
-        );
-
-        return;
-
-    }
-
-
-    dreams.push({
-
-        id:Date.now(),
-
-        title:title,
-
-        image:image
-
-    });
-
-
-    saveAll();
-
-    renderDreams();
-
-
-    closeModal(
-        "dreamModal"
-    );
-
-
-    document
-        .getElementById("dreamTitle")
-        .value = "";
-
-
-    document
-        .getElementById("dreamImage")
-        .value = "";
-
-
-    showToast(
-        "Dream added 🖼️",
-        title
-    );
-
+function showToast(title,text){
+    const t=document.getElementById("toast");
+    document.getElementById("toastTitle").textContent=title;
+    document.getElementById("toastText").textContent=text;
+    t.classList.add("show");
+    clearTimeout(window.__toast);
+    window.__toast=setTimeout(()=>t.classList.remove("show"),4000);
 }
+function closeModal(id){document.getElementById(id)?.classList.remove("show")}
+window.addEventListener("click",e=>{if(e.target.classList.contains("modal"))e.target.classList.remove("show")});
 
-
-function renderDreams(){
-
-    const gallery =
-        document
-        .getElementById("dreamGallery");
-
-
-    if(dreams.length === 0){
-
-        gallery.innerHTML = `
-            <div class="muted">
-                No dreams added yet.
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    gallery.innerHTML =
-        dreams
-        .map(
-            dream => `
-
-            <div class="dream">
-
-                <img
-                    src="${escapeAttr(
-                        dream.image
-                    )}"
-                    alt="${escapeAttr(
-                        dream.title
-                    )}"
-                    onerror="
-                    this.src=
-                    'https://via.placeholder.com/900x500/14233b/ffffff?text=Dream'
-                    ">
-
-
-                <div class="dreamContent">
-
-                    <b>
-                        ${escapeHtml(
-                            dream.title
-                        )}
-                    </b>
-
-                </div>
-
-            </div>
-
-            `
-        )
-        .join("");
-
+async function init(){
+    await openDB().catch(()=>showToast("Storage warning","Offline media storage could not be opened."));
+    setTodayDate();
+    document.getElementById("taskDate").value=localDateString();
+    renderTasks();renderGoals();renderHabits();renderProfitLoss();
+    await renderDreams();await renderVideos();
+    updateStats();
+    setInterval(checkReminders,15000);
 }
+document.addEventListener("DOMContentLoaded",init);
 
-
-/* =========================================================
-   YOUTUBE
-========================================================= */
-
-function getYoutubeId(url){
-
-    try{
-
-        const u =
-            new URL(url);
-
-
-        if(
-            u.hostname.includes(
-                "youtu.be"
-            )
-        ){
-
-            return u
-                .pathname
-                .replace(
-                    "/",
-                    ""
-                );
-
-        }
-
-
-        if(
-            u.searchParams.get("v")
-        ){
-
-            return u
-                .searchParams
-                .get("v");
-
-        }
-
-
-        if(
-            u.pathname.includes(
-                "/embed/"
-            )
-        ){
-
-            return u.pathname
-                .split("/embed/")[1];
-
-        }
-
-
-        return null;
-
-    }
-    catch(e){
-
-        return null;
-
-    }
-
+/* =========================
+   Header / nav
+========================= */
+function setTodayDate(){
+    const now=new Date();
+    document.getElementById("todayDate").textContent=now.toLocaleDateString("en-IN",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+    const h=now.getHours();
+    document.getElementById("greetingTitle").textContent=
+        h>=22?"Good Night 🌃":h>=18?"Good Evening 🌙":h>=12?"Good Afternoon 🌤️":"Good Morning ☀️";
 }
-
-
-function openVideoModal(){
-
-    document
-        .getElementById("videoModal")
-        .classList.add("show");
-
-}
-
-
-function saveVideo(){
-
-    const title =
-        document
-        .getElementById("videoTitle")
-        .value
-        .trim();
-
-
-    const url =
-        document
-        .getElementById("videoUrl")
-        .value
-        .trim();
-
-
-    const videoId =
-        getYoutubeId(url);
-
-
-    if(
-        !title ||
-        !videoId
-    ){
-
-        showToast(
-            "Invalid YouTube URL",
-            "Please paste a valid YouTube link."
-        );
-
-        return;
-
-    }
-
-
-    videos.push({
-
-        id:Date.now(),
-
-        title:title,
-
-        videoId:videoId
-
-    });
-
-
-    saveAll();
-
-    renderVideos();
-
-
-    closeModal(
-        "videoModal"
-    );
-
-
-    document
-        .getElementById("videoTitle")
-        .value = "";
-
-
-    document
-        .getElementById("videoUrl")
-        .value = "";
-
-
-    showToast(
-        "Video added 🎥",
-        title
-    );
-
-}
-
-
-function renderVideos(){
-
-    const container =
-        document
-        .getElementById("videoGrid");
-
-
-    if(videos.length === 0){
-
-        container.innerHTML = `
-
-            <div
-                class="muted"
-                style="
-                grid-column:1/-1;
-                padding:15px;
-                ">
-
-                No videos yet.<br><br>
-
-                Add a YouTube motivation video.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        videos
-        .map(
-            video => `
-
-            <div class="videoCard">
-
-                <div class="videoFrame">
-
-                    <iframe
-                        src="
-                        https://www.youtube.com/embed/
-                        ${escapeAttr(
-                            video.videoId
-                        )}
-                        "
-                        title="
-                        ${escapeAttr(
-                            video.title
-                        )}
-                        "
-                        allowfullscreen>
-                    </iframe>
-
-                </div>
-
-
-                <div class="videoTitle">
-
-                    <b>
-                        ${escapeHtml(
-                            video.title
-                        )}
-                    </b>
-
-                </div>
-
-            </div>
-
-            `
-        )
-        .join("");
-
-}
-
-
-/* =========================================================
-   PROFIT VS LOSS
-========================================================= */
-
-function openProfitLossModal(){
-
-    document
-        .getElementById("profitLossModal")
-        .classList.add("show");
-
-}
-
-
-function saveProfitLoss(){
-
-    const task =
-        document
-        .getElementById("plTask")
-        .value
-        .trim();
-
-
-    const profit =
-        document
-        .getElementById("plProfit")
-        .value
-        .trim();
-
-
-    const profitImage =
-        document
-        .getElementById("plProfitImage")
-        .value
-        .trim();
-
-
-    const loss =
-        document
-        .getElementById("plLoss")
-        .value
-        .trim();
-
-
-    const lossImage =
-        document
-        .getElementById("plLossImage")
-        .value
-        .trim();
-
-
-    if(!task){
-
-        showToast(
-            "Missing task",
-            "Please enter task or decision."
-        );
-
-        return;
-
-    }
-
-
-    profitLossData.push({
-
-        id:Date.now(),
-
-        task:task,
-
-        profit:profit,
-
-        profitImage:profitImage,
-
-        loss:loss,
-
-        lossImage:lossImage
-
-    });
-
-
-    saveAll();
-
-    renderProfitLoss();
-
-
-    closeModal(
-        "profitLossModal"
-    );
-
-
-    document
-        .getElementById("plTask")
-        .value = "";
-
-
-    document
-        .getElementById("plProfit")
-        .value = "";
-
-
-    document
-        .getElementById("plProfitImage")
-        .value = "";
-
-
-    document
-        .getElementById("plLoss")
-        .value = "";
-
-
-    document
-        .getElementById("plLossImage")
-        .value = "";
-
-
-    showToast(
-        "Saved ✅",
-        "Profit vs Loss reminder added."
-    );
-
-}
-
-
-function renderProfitLoss(){
-
-    const container =
-        document
-        .getElementById("profitLossList");
-
-
-    if(
-        profitLossData.length === 0
-    ){
-
-        container.innerHTML = `
-
-            <div
-                style="
-                text-align:center;
-                padding:40px;
-                color:#8c9ab0;
-                ">
-
-                अभी कोई Profit vs Loss reminder नहीं है.<br><br>
-
-                कोई ऐसा काम add करो जिसे
-                तुम टालना नहीं चाहते 🚀
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        profitLossData
-        .map(
-            item => {
-
-                const profitImg =
-                    item.profitImage ||
-                    "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80";
-
-
-                const lossImg =
-                    item.lossImage ||
-                    "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=900&q=80";
-
-
-                return `
-
-                <div class="profitLossItem">
-
-                    <div
-                        class="profitLossHeader">
-
-                        <div>
-
-                            <div
-                                class="muted">
-                                TASK / DECISION
-                            </div>
-
-                            <h3>
-                                ${escapeHtml(
-                                    item.task
-                                )}
-                            </h3>
-
-                        </div>
-
-
-                        <button
-                            class="smallBtn"
-                            onclick="
-                            deleteProfitLoss(
-                                ${item.id}
-                            )
-                            ">
-
-                            🗑️
-
-                        </button>
-
-                    </div>
-
-
-                    <div
-                        class="profitLossGrid">
-
-
-                        <!-- PROFIT -->
-
-                        <div class="plSide">
-
-                            <img
-                                class="plImage"
-                                src="${escapeAttr(
-                                    profitImg
-                                )}"
-                                alt="Profit image"
-
-                                onerror="
-                                this.src=
-                                'https://via.placeholder.com/900x500/14233b/ffffff?text=PROFIT'
-                                ">
-
-
-                            <div
-                                class="plContent">
-
-                                <div
-                                    class="
-                                    plTitle
-                                    profitLabel
-                                    ">
-
-                                    🟢 PROFIT
-
-                                </div>
-
-
-                                <div
-                                    class="plDescription">
-
-                                    ${
-                                        escapeHtml(
-                                            item.profit ||
-                                            "इस काम को करने का फायदा यहाँ लिखो."
-                                        )
-                                    }
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- LOSS -->
-
-                        <div class="plSide">
-
-                            <img
-                                class="plImage"
-                                src="${escapeAttr(
-                                    lossImg
-                                )}"
-                                alt="Loss image"
-
-                                onerror="
-                                this.src=
-                                'https://via.placeholder.com/900x500/14233b/ffffff?text=LOSS'
-                                ">
-
-
-                            <div
-                                class="plContent">
-
-                                <div
-                                    class="
-                                    plTitle
-                                    lossLabel
-                                    ">
-
-                                    🔴 LOSS
-
-                                </div>
-
-
-                                <div
-                                    class="plDescription">
-
-                                    ${
-                                        escapeHtml(
-                                            item.loss ||
-                                            "इस काम को न करने का नुकसान यहाँ लिखो."
-                                        )
-                                    }
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                `;
-
-            }
-        )
-        .join("");
-
-}
-
-
-function deleteProfitLoss(id){
-
-    profitLossData =
-        profitLossData.filter(
-            item => item.id !== id
-        );
-
-
-    saveAll();
-
-    renderProfitLoss();
-
-
-    showToast(
-        "Deleted",
-        "Profit vs Loss reminder removed."
-    );
-
-}
-
-
-/* =========================================================
-   MODALS
-========================================================= */
-
-function closeModal(id){
-
-    const modal =
-        document.getElementById(id);
-
-
-    if(modal){
-
-        modal.classList.remove("show");
-
-    }
-
-}
-
-
-window.addEventListener(
-    "click",
-    function(e){
-
-        if(
-            e.target.classList
-            .contains("modal")
-        ){
-
-            e.target
-                .classList
-                .remove("show");
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
 function scrollToSection(id){
+    document.getElementById(id)?.scrollIntoView({behavior:"smooth"});
+    document.getElementById("sidebar").classList.remove("open");
+}
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
 
-    const element =
-        document.getElementById(id);
+/* =========================
+   Tasks
+========================= */
+function addTask(){
+    const title=document.getElementById("taskTitle").value.trim();
+    if(!title)return showToast("Task missing","Enter a task name.");
+    tasks.push({id:Date.now(),title,date:document.getElementById("taskDate").value||localDateString(),
+        time:document.getElementById("taskTime").value,priority:"normal",completed:false});
+    saveAll();renderTasks();updateStats();
+    document.getElementById("taskTitle").value="";
+    document.getElementById("taskTime").value="";
+    showToast("Task added ✅","Task saved.");
+}
+function quickAddTask(){
+    const i=document.getElementById("quickTask"),title=i.value.trim();
+    if(!title)return;
+    tasks.push({id:Date.now(),title,date:localDateString(),time:"",priority:"normal",completed:false});
+    i.value="";saveAll();renderTasks();updateStats();showToast("Quick task added",title);
+}
+function renderTasks(){
+    const list=document.getElementById("taskList");
+    const search=document.getElementById("taskSearch").value.toLowerCase();
+    let filtered=tasks.filter(t=>t.title.toLowerCase().includes(search));
+    filtered.sort((a,b)=>a.completed-b.completed || (a.date+a.time).localeCompare(b.date+b.time));
+    if(!filtered.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:#8c9ab0">No tasks found.<br><br>Add your first task 🚀</div>`;return}
+    list.innerHTML=filtered.map(t=>`
+        <div class="task ${t.completed?"done":""}">
+            <button class="check" onclick="toggleTask(${t.id})"></button>
+            <div class="taskBody">
+                <div class="taskName">${esc(t.title)}</div>
+                <div class="taskMeta">
+                    <span>📅 ${esc(t.date)}</span>
+                    ${t.time?`<span>⏰ ${esc(t.time)}</span>`:""}
+                    ${t.priority==="high"?`<span class="high">🔥 High Priority</span>`:`<span class="tag">Normal</span>`}
+                </div>
+            </div>
+            <button class="smallBtn" onclick="deleteTask(${t.id})">🗑️</button>
+        </div>`).join("");
+}
+function toggleTask(id){
+    const t=tasks.find(x=>x.id===id);if(!t)return;t.completed=!t.completed;
+    saveAll();renderTasks();updateStats();
+    if(t.completed)showToast("Great job! 🎉","One more small win completed.");
+}
+function deleteTask(id){tasks=tasks.filter(x=>x.id!==id);saveAll();renderTasks();updateStats()}
+function updateStats(){
+    const total=tasks.length,done=tasks.filter(t=>t.completed).length,p=total?Math.round(done/total*100):0;
+    document.getElementById("totalTasks").textContent=total;
+    document.getElementById("completedTasks").textContent=done;
+    document.getElementById("productivity").textContent=p+"%";
+    document.getElementById("progressText").textContent=p+"%";
+    document.getElementById("progressFill").style.width=p+"%";
+    const g=goals.find(x=>x.progress<100);
+    document.getElementById("mainGoalText").textContent=g?g.title:"Create your first goal";
+}
 
+/* =========================
+   Task reminder
+========================= */
+function openTaskModal(){
+    document.getElementById("taskModal").classList.add("show");
+    document.getElementById("modalTaskDate").value=localDateString();
+}
+function saveModalTask(){
+    const title=document.getElementById("modalTaskTitle").value.trim();
+    if(!title)return showToast("Task missing","Enter task name.");
+    tasks.push({id:Date.now(),title,date:document.getElementById("modalTaskDate").value||localDateString(),
+        time:document.getElementById("modalTaskTime").value,priority:document.getElementById("modalTaskPriority").value,completed:false});
+    saveAll();renderTasks();updateStats();closeModal("taskModal");
+    document.getElementById("modalTaskTitle").value="";document.getElementById("modalTaskTime").value="";
+    showToast("Reminder created ⏰","Task scheduled.");
+}
+function requestNotifications(){
+    if(!("Notification" in window))return showToast("Not supported","Browser notifications are not supported.");
+    Notification.requestPermission().then(p=>showToast(p==="granted"?"Notifications enabled ✅":"Notifications blocked",p==="granted"?"Reminders can notify you.":"Enable them from browser settings."));
+}
+function sendNotification(title,body){
+    if("Notification" in window&&Notification.permission==="granted")new Notification(title,{body});
+}
+function playAlarm(){
+    try{
+        const C=window.AudioContext||window.webkitAudioContext,ctx=new C(),o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);o.frequency.value=880;o.type="sine";g.gain.value=.12;o.start();o.stop(ctx.currentTime+.6);
+    }catch(e){}
+}
+function checkReminders(){
+    const n=new Date(),today=localDateString(),tm=`${String(n.getHours()).padStart(2,"0")}:${String(n.getMinutes()).padStart(2,"0")}`;
+    tasks.forEach(t=>{
+        if(t.completed||!t.time||t.date!==today)return;
+        const key=`${t.id}-${today}-${t.time}`;
+        if(t.time===tm&&!notifiedTasks.includes(key)){
+            notifiedTasks.push(key);saveAll();showToast("⏰ Task Reminder",t.title);playAlarm();sendNotification("LifeFlow Reminder",t.title);
+        }
+    });
+}
 
-    if(element){
-
-        element.scrollIntoView({
-            behavior:"smooth",
-            block:"start"
-        });
-
+/* =========================
+   Goals / habits
+========================= */
+function openGoalModal(){document.getElementById("goalModal").classList.add("show")}
+function saveGoal(){
+    const title=document.getElementById("goalTitle").value.trim();if(!title)return;
+    let progress=Math.max(0,Math.min(100,Number(document.getElementById("goalProgress").value)||0));
+    goals.push({id:Date.now(),title,progress});saveAll();renderGoals();updateStats();closeModal("goalModal");
+    document.getElementById("goalTitle").value="";showToast("Goal added 🎯",title);
+}
+function renderGoals(){
+    const el=document.getElementById("goalList");
+    if(!goals.length){el.innerHTML=`<div class="muted">No goals yet.</div>`;return}
+    el.innerHTML=goals.map(g=>`<div class="goal"><div class="goalTop"><b>${esc(g.title)}</b><span>${g.progress}%</span></div>
+        <div class="goalProgress"><div class="goalProgressBar"><div class="goalProgressFill" style="width:${g.progress}%"></div></div></div></div>`).join("");
+}
+function completeHabit(){
+    const d=localDateString();
+    if(habitDays.includes(d))return showToast("Already completed ✅","Today's habit is already done.");
+    habitDays.push(d);saveAll();renderHabits();showToast("Habit completed 🔥","Small action. Big effect.");
+}
+function renderHabits(){
+    const el=document.getElementById("habitGrid"),now=new Date();el.innerHTML="";
+    for(let i=6;i>=0;i--){
+        const d=new Date(now);d.setDate(now.getDate()-i);const key=formatDate(d),active=habitDays.includes(key);
+        el.innerHTML+=`<div class="habitDay ${active?"active":""}"><b>${d.toLocaleDateString("en",{weekday:"short"})}</b><br>${d.getDate()}<br>${active?"✓":"·"}</div>`;
     }
-
-
-    const sidebar =
-        document.getElementById("sidebar");
-
-
-    sidebar.classList.remove("open");
-
+    let streak=0,d=new Date();
+    while(habitDays.includes(formatDate(d))){streak++;d.setDate(d.getDate()-1)}
+    document.getElementById("currentStreak").textContent=streak;
 }
 
-
-function toggleSidebar(){
-
-    document
-        .getElementById("sidebar")
-        .classList
-        .toggle("open");
-
+/* =========================
+   Dream Gallery: upload + URL
+========================= */
+function openDreamModal(){
+    document.getElementById("dreamModal").classList.add("show");
+    showDreamMethod("upload");
+}
+function showDreamMethod(method){
+    dreamMethod=method;
+    document.getElementById("dreamUploadBox").style.display=method==="upload"?"block":"none";
+    document.getElementById("dreamUploadTitle").style.display=method==="upload"?"block":"none";
+    document.getElementById("dreamUrlBox").style.display=method==="url"?"block":"none";
+}
+document.getElementById("dreamFile")?.addEventListener("change",function(){
+    const file=this.files[0],p=document.getElementById("dreamPreview");
+    if(!file){p.style.display="none";return}
+    const u=URL.createObjectURL(file);objectUrls.push(u);
+    p.style.display="block";p.innerHTML=`<img src="${u}" alt="Preview">`;
+});
+async function saveDream(){
+    try{
+        const id=Date.now();
+        if(dreamMethod==="upload"){
+            const file=document.getElementById("dreamFile").files[0],title=document.getElementById("dreamFileTitle").value.trim()||file?.name||"My Dream";
+            if(!file)return showToast("Choose a photo","Select an image first.");
+            await dbPut({id,blob:file,type:"image"});
+            dreams.push({id,title,kind:"local",mediaId:id});
+        }else{
+            const title=document.getElementById("dreamUrlTitle").value.trim(),url=document.getElementById("dreamUrl").value.trim();
+            if(!title||!url)return showToast("Missing details","Enter title and image URL.");
+            dreams.push({id,title,kind:"url",url});
+        }
+        saveAll();await renderDreams();closeModal("dreamModal");
+        showToast("Dream saved 🖼️",dreams.at(-1).title);
+    }catch(e){showToast("Save failed","The browser could not store this photo.")}
+}
+async function renderDreams(){
+    const el=document.getElementById("dreamGallery");clearObjectUrls();
+    if(!dreams.length){el.innerHTML=`<div class="muted">No dreams added yet.</div>`;return}
+    const parts=[];
+    for(const d of dreams){
+        let src=d.url;
+        if(d.kind==="local"){
+            const rec=await dbGet(d.mediaId);
+            if(rec){src=URL.createObjectURL(rec.blob);objectUrls.push(src)}
+        }
+        parts.push(`<div class="dream">
+            <img src="${esc(src||"")}" alt="${esc(d.title)}" onerror="this.src='https://via.placeholder.com/900x500/14233b/ffffff?text=Dream'">
+            <span class="mediaBadge">${d.kind==="local"?"OFFLINE PHOTO":"PHOTO LINK"}</span>
+            <div class="dreamContent"><b>${esc(d.title)}</b><button class="smallBtn" style="float:right" onclick="deleteDream(${d.id})">🗑️</button></div>
+        </div>`);
+    }
+    el.innerHTML=parts.join("");
+}
+async function deleteDream(id){
+    const d=dreams.find(x=>x.id===id);if(!d)return;
+    if(d.kind==="local")await dbDelete(d.mediaId);
+    dreams=dreams.filter(x=>x.id!==id);saveAll();await renderDreams();showToast("Deleted","Dream removed.");
 }
 
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer;
-
-
-function showToast(
-    title,
-    text
-){
-
-    const toast =
-        document.getElementById("toast");
-
-
-    document
-        .getElementById("toastTitle")
-        .textContent = title;
-
-
-    document
-        .getElementById("toastText")
-        .textContent = text;
-
-
-    toast.classList.add("show");
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(
-            function(){
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            4000
-        );
-
+/* =========================
+   Videos: local upload + URL + YouTube
+========================= */
+function openVideoModal(){document.getElementById("videoModal").classList.add("show");showVideoMethod("upload")}
+function showVideoMethod(method){
+    videoMethod=method;
+    document.getElementById("videoUploadBox").style.display=method==="upload"?"block":"none";
+    document.getElementById("youtubeBox").style.display=method==="youtube"?"block":"none";
+}
+document.getElementById("videoFile")?.addEventListener("change",function(){
+    const file=this.files[0],p=document.getElementById("videoPreview");
+    if(!file){p.style.display="none";return}
+    const u=URL.createObjectURL(file);objectUrls.push(u);p.style.display="block";p.innerHTML=`<video src="${u}" controls></video>`;
+});
+function getYoutubeId(url){
+    try{
+        const u=new URL(url);
+        if(u.hostname.includes("youtu.be"))return u.pathname.slice(1);
+        return u.searchParams.get("v")||u.pathname.split("/embed/")[1]||null;
+    }catch{return null}
+}
+async function saveVideo(){
+    try{
+        const id=Date.now();
+        if(videoMethod==="upload"){
+            const file=document.getElementById("videoFile").files[0],title=document.getElementById("videoFileTitle").value.trim()||file?.name||"My Video";
+            if(!file)return showToast("Choose a video","Select a video first.");
+            await dbPut({id,blob:file,type:"video"});
+            videos.push({id,title,kind:"local",mediaId:id});
+        }else{
+            const title=document.getElementById("youtubeTitle").value.trim(),url=document.getElementById("youtubeUrl").value.trim(),videoId=getYoutubeId(url);
+            if(!title||!videoId)return showToast("Invalid YouTube URL","Paste a valid YouTube link.");
+            videos.push({id,title,kind:"youtube",videoId});
+        }
+        saveAll();await renderVideos();closeModal("videoModal");showToast("Video saved 🎥",videos.at(-1).title);
+    }catch(e){showToast("Save failed","The browser could not store this video.")}
+}
+async function renderVideos(){
+    const el=document.getElementById("videoGrid");clearObjectUrls();
+    if(!videos.length){el.innerHTML=`<div class="muted" style="grid-column:1/-1">No videos yet.<br><br>Add a local video or YouTube link.</div>`;return}
+    const parts=[];
+    for(const v of videos){
+        let frame="",badge="";
+        if(v.kind==="local"){
+            const rec=await dbGet(v.mediaId);
+            if(rec){const src=URL.createObjectURL(rec.blob);objectUrls.push(src);frame=`<video src="${src}" controls preload="metadata"></video>`}
+            badge="OFFLINE VIDEO";
+        }else{
+            frame=`<iframe src="https://www.youtube.com/embed/${esc(v.videoId)}" title="${esc(v.title)}" allowfullscreen></iframe>`;
+            badge="YOUTUBE";
+        }
+        parts.push(`<div class="videoCard"><div class="videoFrame">${frame}</div><div class="videoTitle"><b>${esc(v.title)}</b><div class="mediaSource">${badge}</div>
+            <button class="smallBtn" style="float:right;margin-top:6px" onclick="deleteVideo(${v.id})">🗑️</button></div></div>`);
+    }
+    el.innerHTML=parts.join("");
+}
+async function deleteVideo(id){
+    const v=videos.find(x=>x.id===id);if(!v)return;
+    if(v.kind==="local")await dbDelete(v.mediaId);
+    videos=videos.filter(x=>x.id!==id);saveAll();await renderVideos();showToast("Deleted","Video removed.");
 }
 
-
-/* =========================================================
-   SECURITY HELPERS
-========================================================= */
-
-function escapeHtml(str){
-
-    return String(str)
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-
+/* =========================
+   Profit / Loss with upload or link
+========================= */
+function openProfitLossModal(){document.getElementById("profitLossModal").classList.add("show")}
+function showPLMethod(side,method){
+    plMethods[side]=method;
+    document.getElementById(`pl${side==="profit"?"Profit":"Loss"}UploadBox`).style.display=method==="upload"?"block":"none";
+    document.getElementById(`pl${side==="profit"?"Profit":"Loss"}UrlBox`).style.display=method==="url"?"block":"none";
+}
+async function saveProfitLoss(){
+    try{
+        const id=Date.now(),task=document.getElementById("plTask").value.trim(),profit=document.getElementById("plProfit").value.trim(),
+              loss=document.getElementById("plLoss").value.trim();
+        if(!task)return showToast("Missing task","Enter task or decision.");
+        const item={id,task,profit,loss,profitKind:"default",lossKind:"default"};
+        if(plMethods.profit==="upload"){
+            const f=document.getElementById("plProfitFile").files[0];
+            if(f){const mid=Date.now()+1;await dbPut({id:mid,blob:f,type:"image"});item.profitKind="local";item.profitMediaId=mid;}
+        }else{
+            const u=document.getElementById("plProfitUrl").value.trim();if(u){item.profitKind="url";item.profitUrl=u}
+        }
+        if(plMethods.loss==="upload"){
+            const f=document.getElementById("plLossFile").files[0];
+            if(f){const mid=Date.now()+2;await dbPut({id:mid,blob:f,type:"image"});item.lossKind="local";item.lossMediaId=mid;}
+        }else{
+            const u=document.getElementById("plLossUrl").value.trim();if(u){item.lossKind="url";item.lossUrl=u}
+        }
+        profitLossData.push(item);saveAll();await renderProfitLoss();closeModal("profitLossModal");showToast("Saved ⚖️","Profit vs Loss added.");
+    }catch(e){showToast("Save failed","Could not save the media.")}
+}
+async function resolveImage(kind,url,id){
+    if(kind==="url")return url;
+    if(kind==="local"){const r=await dbGet(id);if(r){const u=URL.createObjectURL(r.blob);objectUrls.push(u);return u}}
+    return "https://via.placeholder.com/900x500/14233b/ffffff?text=ADD+IMAGE";
+}
+async function renderProfitLoss(){
+    const el=document.getElementById("profitLossList");clearObjectUrls();
+    if(!profitLossData.length){
+        el.innerHTML=`<div style="text-align:center;padding:40px;color:#8c9ab0">No Profit vs Loss reminder yet.<br><br>Add a task you don't want to skip ⚖️</div>`;return;
+    }
+    const parts=[];
+    for(const x of profitLossData){
+        const pi=await resolveImage(x.profitKind,x.profitUrl,x.profitMediaId);
+        const li=await resolveImage(x.lossKind,x.lossUrl,x.lossMediaId);
+        parts.push(`<div class="profitLossItem">
+            <div class="profitLossHeader"><div><div class="muted">TASK / DECISION</div><h3>${esc(x.task)}</h3></div>
+            <button class="smallBtn" onclick="deleteProfitLoss(${x.id})">🗑️</button></div>
+            <div class="profitLossGrid">
+                <div class="plSide"><img class="plImage" src="${esc(pi)}" alt="Profit"><div class="plContent"><div class="plTitle profitLabel">🟢 PROFIT</div><div class="plDescription">${esc(x.profit||"Add the benefit here.")}</div></div></div>
+                <div class="plSide"><img class="plImage" src="${esc(li)}" alt="Loss"><div class="plContent"><div class="plTitle lossLabel">🔴 LOSS</div><div class="plDescription">${esc(x.loss||"Add the loss here.")}</div></div></div>
+            </div>
+        </div>`);
+    }
+    el.innerHTML=parts.join("");
+}
+async function deleteProfitLoss(id){
+    const x=profitLossData.find(a=>a.id===id);if(!x)return;
+    if(x.profitKind==="local")await dbDelete(x.profitMediaId);
+    if(x.lossKind==="local")await dbDelete(x.lossMediaId);
+    profitLossData=profitLossData.filter(a=>a.id!==id);saveAll();await renderProfitLoss();showToast("Deleted","Profit vs Loss removed.");
 }
 
-
-function escapeAttr(str){
-
-    return escapeHtml(str);
-
+/* =========================
+   Object URL cleanup
+========================= */
+function clearObjectUrls(){
+    objectUrls.forEach(u=>URL.revokeObjectURL(u));
+    objectUrls=[];
 }
-
 </script>
-
 </body>
 </html>
